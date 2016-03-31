@@ -35,3 +35,9 @@ jspm_packages
 
 # VS Code typings
 typings/
+
+# public folder
+public/
+
+# vs code
+.vscode/
