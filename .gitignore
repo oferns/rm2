@@ -41,3 +41,6 @@ public/
 
 # vs code
 .vscode/
+
+# wallaby.js
+wallaby.js
