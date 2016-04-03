@@ -1,3 +1,4 @@
+doctype html
 html
   head
     block icons
@@ -19,8 +20,22 @@ html
         meta(name='msapplication-TileImage' content='//redmouse.blob.core.windows.net/img/ms-icon-144x144.png')
         meta(name='theme-color' content='#ffffff')
     block styles
+        link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
         link(rel='stylesheet' href='/css/rm.css')
     body
+        
+        label(for='menu', onclick='') Menu
+        input#menu(type='checkbox')
+        nav
+          ul
+            li
+                | Red Mouse 
+            li
+                a(href='#') About
+            li
+                a(href='#') Contact
+            li
+                a(href='#') FAQs
         block body
             
 

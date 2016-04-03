@@ -1,0 +1,71 @@
+table
+  border-collapse collapse
+  cell-spacing 0
+  margin 0.5em auto 0.5em auto
+  box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
+  border-radius 0.8em
+  text-align center
+  caption
+    background-color $black
+    color white
+    border-radius 0.8em 0.8em 0 0
+    font-size 1.25em
+tr
+    padding 0
+    margin 0
+    &:nth-of-type(odd)
+        background #eee
+    &:last-child
+        border-radius 0 0 0.8em 0.8em
+
+th  
+    background $silver
+    color $red
+    font-weight bold
+
+td, th
+    padding 0.3em
+    margin 0
+    border-top 1px solid $silver
+
+
++below(rupture.mobile-cutoff)
+    table, thead, tbody, th, td, tr, caption
+        display block
+        text-align left
+    table
+        caption
+            text-align center
+        thead
+            tr
+                position absolute
+                top -9999px
+                left -9999px
+
+        tr
+            background-color $grey 
+            border-bottom 1px solid $black
+        td
+            border none
+            position relative
+            padding 0
+            text-align left
+            border-bottom 1px solid $silver
+            border-top 1px solid $grey
+            &:before
+                margin-left 0.3em
+                margin-right 0.6em
+                padding 0.3em 0.3em 0.3em 0
+                display inline-block
+                width 40%
+                height 100%
+                padding-right 1em
+                white-space nowrap
+                content attr(data-th)
+                text-align right
+                color $red
+                font-weight bold
+            
+         tr   
+            &:nth-of-type(odd)
+                background $silver

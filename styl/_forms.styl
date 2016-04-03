@@ -1,0 +1,49 @@
+form
+    fieldset
+        box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
+        border-radius 0.8em
+        padding 1em 0 1em 0
+        border none
+        background-color $white            
+        legend
+            padding 0
+            margin 0
+            width 100%
+            font-size 1.25em
+            line-height 1.25em
+            span
+                display block
+                width 100%
+                position relative
+                top 0.5em
+                background-color $black
+                color $white
+                border-radius 0.8em 0.8em 0 0
+                text-align center
+    .field
+        margin 0.5em 0 0.5em 0
+        label
+            display inline-block
+            width 35%
+            text-align right
+            margin-right 4%
+    +html5-inputs()
+        input($red,50%)
+    select
+        input($red,50%)
+    
+    
+    input[type=submit][name$=submit]
+        glossy-button($silver, 'medium', $red)
+    input[type=submit][name$=delete]
+        glossy-button($silver, 'medium', $red)
+    a.cancel
+        glossy-button($silver, 'medium', $red)
+    
+    .field.success
+        field-success()
+    .field.warning
+        field-warning()
+
+    .field.error
+        field-error()
