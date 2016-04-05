@@ -67,8 +67,11 @@ section
 .center
     col(1)
     height 100%
-    align('vertical')
+    &> *
+        align(vertical)
+        width 100%
     +above(rupture.mobile-cutoff)
         > *
             align(both)
+            width auto
             
