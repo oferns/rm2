@@ -1,0 +1,56 @@
+form(name="login", action="/login", method="post")
+    input(type="hidden" name="_csrf" value=csrfToken)
+    fieldset 
+        legend 
+            span Log in
+        .field
+            label(
+                id="email"
+                for='email'
+                ) Email
+            input(
+                id='login[email]'
+                type='email'
+                name='login[email]'
+                placeholder='you@example.com'
+                data-rule-required='true'
+                data-msg-required='Please enter your email address'
+                )= login.email
+            label(
+                id='login[email]-error'
+                for='login[email]').error= errors['login[email]'] ? errors['login[email]'].msg : ''
+        .field
+            label(
+                id="password"
+                for='password'
+                ) Password
+            input(
+                id='login[password]'
+                type='password'
+                name='login[password]'
+                placeholder='*******'
+                data-rule-required='true'
+                data-msg-required='Please enter your password'
+                )
+            label(
+                id='login[password]-error'
+                for='login[password]').error= errors['login[password]'] ? errors['login[password]'].msg : ''
+        .field
+            label(
+                for='login[remember]'
+                ) Remember me
+            input(
+                id='login[remember]'
+                type='checkbox'
+                name='login[remember]'
+                value=login.remember
+                )
+        .actions   
+            a(
+                href='/forgot'
+                ) forgot your password?
+            input(
+                type='submit'
+                name='submit'
+                value='Login'
+                )

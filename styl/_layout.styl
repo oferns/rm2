@@ -15,6 +15,7 @@ html
         cf()
 
 .row
+    cf()
     center(95%)
     
 section > div, p
@@ -63,11 +64,11 @@ section
         col(1)
 
 
-
-h1 
-h2 
-h3 
-h4
-h5 
-h6
-    color $red
+.center
+    col(1)
+    height 100%
+    align('vertical')
+    +above(rupture.mobile-cutoff)
+        > *
+            align(both)
+            

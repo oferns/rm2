@@ -33,12 +33,23 @@ form
         input($red,50%)
     
     
+    .actions
+        text-align right
+        width 90%
     input[type=submit][name$=submit]
         glossy-button($silver, 'medium', $red)
-    input[type=submit][name$=delete]
+        +below(rupture.mobile-cutoff)
+            glossy-button($silver, 'small', $red) 
+                
+    input[type=submit][name$=delete]    
         glossy-button($silver, 'medium', $red)
-    a.cancel
+        +below(rupture.mobile-cutoff)
+            glossy-button($silver, 'small', $red) 
+        
+    a[id$='cancel']
         glossy-button($silver, 'medium', $red)
+        +below(rupture.mobile-cutoff)
+            glossy-button($silver, 'small', $red) 
     
     .field.success
         field-success()
@@ -47,3 +58,4 @@ form
 
     .field.error
         field-error()
+     
