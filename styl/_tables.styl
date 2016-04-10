@@ -1,32 +1,32 @@
 table
-  border-collapse collapse
-  cell-spacing 0
-  margin 0.5em auto 0.5em auto
-  box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
-  border-radius 0.8em
-  text-align center
-  caption
-    background-color $black
-    color white
-    border-radius 0.8em 0.8em 0 0
-    font-size 1.25em
-tr
-    padding 0
-    margin 0
-    &:nth-of-type(odd)
-        background #eee
-    &:last-child
-        border-radius 0 0 0.8em 0.8em
-
-th  
-    background $silver
-    color $red
-    font-weight bold
-
-td, th
-    padding 0.3em
-    margin 0
-    border-top 1px solid $silver
+    border-collapse collapse
+    cell-spacing 0
+    margin 0.5em auto 0.5em auto
+    box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
+    border-radius 0.8em
+    text-align center
+    caption
+        background-color $black
+        color white
+        border-radius 0.8em 0.8em 0 0
+        font-size 1.25em
+    tbody
+        tr
+            padding 0
+            margin 0
+            &:nth-of-type(odd)
+                background #eee
+            &:last-child
+                border-radius 0 0 0.8em 0.8em
+    th  
+        background $silver
+        color $red
+        font-weight bold
+    td
+    th
+        padding 0.3em
+        margin 0
+        border-top 1px solid $silver
 
 
 +below(rupture.mobile-cutoff)

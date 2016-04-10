@@ -13,24 +13,40 @@ html
         +below(rupture.mobile-cutoff)
             font-size 0.85em
         cf()
-
 .row
     cf()
     center(95%)
     +below(rupture.desktop-cutoff)
         center(98%)
-        
-section > div, p
-    padding  0 1em 0 1em
-    
+       
 #header
     span(1)
     height 3em
-    background $black
+    line-height 3em
     box-shadow none
     border-radius 0
-    position fixed
     z-index 1
+    +below(rupture.desktop-cutoff)
+        background $black
+        border-bottom 1px solid $red
+    > a
+        margin-left 0.75em
+        text-decoration none
+        color $red
+        font-weight bold
+        +below(rupture.desktop-cutoff)
+            margin-left 0.5em
+        +below(rupture.mobile-cutoff)
+            margin-left 0.25em
+        img
+            transform scaleX(-1)
+            vertical-align middle
+            height 3em
+            margin-right 0.75em
+            +below(rupture.desktop-cutoff)
+                margin-right 0.5em
+            +below(rupture.mobile-cutoff)
+                margin-right 0.25em
 
 section
     col(1)
@@ -38,6 +54,8 @@ section
     border-radius 0.8em
     margin 1em 0 1em 0
     background-color $white            
+    > div, p
+        padding  0 1em 0 1em
 #body
     margin-top 3em
     center(100%)
@@ -57,7 +75,6 @@ section
     +below(rupture.mobile-cutoff)
         col(1)
 
-
 .onequarter
     col(1/4)
     +below(rupture.desktop-cutoff)
@@ -75,5 +92,4 @@ section
     +above(rupture.mobile-cutoff)
         > *
             align(both)
-            width auto
-            
+            width auto            
