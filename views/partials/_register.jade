@@ -1,0 +1,80 @@
+form(name="register", action="/register", method="post")
+    input(type="hidden" name="_csrf" value=csrfToken)
+    fieldset 
+        legend 
+            span Sign up
+        .field
+            label(
+                for='register[name]'
+                ) Name
+            input(
+                type='text' 
+                name='register[name]'
+                placeholder='Your name'
+                value=register[name]
+                )= register.name
+            label(
+                id='register[name]-error'
+                for='register[name]').error= errors['register[name]'] ? errors['register[name]'].msg : ''
+        .field
+            label(
+                id="email"
+                for='email'
+                ) Email
+            input(
+                id='register[email]'
+                type='email'
+                name='register[email]'
+                placeholder='you@example.com'
+                data-rule-required='true'
+                data-msg-required='Please enter your email address'
+                )= register.email
+            label(
+                id='register[email]-error'
+                for='register[email]').error= errors['register[email]'] ? errors['register[email]'].msg : ''
+        .field
+            label(
+                id="password"
+                for='password'
+                ) Password
+            input(
+                id='register[password]'
+                type='password'
+                name='register[password]'
+                placeholder='*******'
+                data-rule-required='true'
+                data-msg-required='Please enter your password'
+                )
+            label(
+                id='register[password]-error'
+                for='register[password]').error= errors['register[password]'] ? errors['register[password]'].msg : ''
+        .field
+            label(
+                id="repassword"
+                for='repassword'
+                ) Repeat password
+            input(
+                id='register[repassword]'
+                type='password'
+                name='register[repassword]'
+                placeholder='*******'
+                data-rule-required='true'
+                data-msg-required='Please enter your repassword'
+                )
+            label(
+                id='register[repassword]-error'
+                for='register[repassword]').error= errors['register[repassword]'] ? errors['register[repassword]'].msg : ''
+        .actions
+            span
+                a(
+                    href='/login'
+                ) Back to login
+                br
+                a(
+                    href='/forgot'
+                ) forgot your password?
+            input(
+                type='submit'
+                name='submit'
+                value='Sign up'
+                )

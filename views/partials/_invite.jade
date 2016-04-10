@@ -1,0 +1,19 @@
+form(name="invite", action="/invite", method="post")
+    input(type="hidden" name="_csrf" value=csrfToken)
+    fieldset 
+        legend 
+            span Invite a new user
+        .field
+            label(
+                for='invite[name]'
+                ) Name
+            input(
+                type='text' 
+                name='invite[name]'
+                placeholder='Your name'
+                value=invite[name]
+                )= invite.name
+            label(
+                id='invite[name]-error'
+                for='invite[name]').error= errors['invite[name]'] ? errors['invite[name]'].msg : ''
+        

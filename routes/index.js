@@ -21,5 +21,11 @@ module.exports = function() {
             return res.render('login', {'errors' : {}, 'login':{} });            
         });
         
+    router.route('/register')
+        .get(function(req, res, next){
+            return res.render('register', {'errors' : {}, 'register':{} });            
+        });
+        
+        
     return router;
 }

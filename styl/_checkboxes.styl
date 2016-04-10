@@ -1,0 +1,74 @@
+input[type="radio"]
+input[type="checkbox"]
+    position absolute
+    left -9999px
+
+    & + label
+        font-family FontAwesome
+        position relative
+        padding-left 1.8em
+        cursor pointer
+        display inline
+        &:hover:before
+            border 1px solid #4778d9!important                
+        &:before
+            content ''
+            position absolute
+            left 0
+            top 0.1em
+            width 1em
+            height 1em
+            border 1px solid #aaa
+            background #f8f8f8
+            box-shadow inset 0 1px 3px rgba(0,0,0,.3)    
+        &:after
+            position absolute
+            transition all .2s
+
+    &:not(:checked) + label:after
+            opacity 0
+            transform scale(0)
+
+    &:checked + label:after
+            opacity 1
+            transform scale(1)
+
+    &:disabled:not(:checked) + label:before
+    &:disabled:checked + label:before
+        box-shadow none
+        border-color #bbb
+        background-color #ddd
+
+    &:disabled:checked + label:after
+        color #999
+
+    &:checked:focus + label:before
+    &:not(:checked):focus + label:before
+        border 1px dotted blue
+
+input[type="checkbox"]
+    &:not(:checked) + label:before
+    &:checked + label:before
+        border-radius 0.1875em
+
+    &:not(:checked) + label:after
+    &:checked + label:after
+        content '\f00c'
+        position absolute
+        top 0.1em
+        left 0.1em
+        font-size 1.2em
+        line-height 0.8em
+
+input[type="radio"]
+    &:not(:checked) + label:before
+    &:checked + label:before
+        border-radius 0.5em
+
+    &:not(:checked) + label:after
+    &:checked + label:after
+        content '\f111'
+        position absolute
+        font-size 0.7em
+        top 0.4em
+        left 0.4em

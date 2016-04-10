@@ -30,14 +30,16 @@ form
                 margin-right 4%
                 vertical-align middle
                 &.error
-                    display inline
                     position absolute
-                    left 92.5%
-                    background-color $red
-                    color $white
+                    width auto
+                    left 95%
+                    color $red
+                    white-space no-wrap
+                    margin-top 0.33em
+                    font-size 0.9em
                     +below(rupture.mobile-cutoff)
-                        right 15%
-                        margin-top 2.65em
+                        left 50%
+                        margin-top 3em
                     
         +html5-inputs()
             input($red,50%)
@@ -45,7 +47,9 @@ form
         select
             input($red,50%)
         
-        
+         @import '_checkboxes'
+         
+                  
         .actions
             margin 0.5em
             line-height 1em
@@ -86,6 +90,5 @@ form
             field-success()
         .field.warning
             field-warning()
-
         .field.error
             field-error()
