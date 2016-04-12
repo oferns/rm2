@@ -124,13 +124,13 @@ gulp.task('watch', ['clean'], function(cb) {
 });
 
 gulp.task('pre-test', function () {
-  return gulp.src(['app/**/*.js', 'routes/**/*.js'])
+  return gulp.src(['routes/**/*.js', '!routes/**/*-tests.js', 'app/**/*.js', '!app/**/*-tests.js'])
     .pipe(istanbul())
     .pipe(istanbul.hookRequire());
 });
 
 gulp.task('test', ['pre-test'], function () {
-  return gulp.src(['tests/*.js'])
+  return gulp.src(['routes/**/*-tests.js', 'app/**/*-tests.js'])
     .pipe(mocha())
     .pipe(istanbul.writeReports())
     .pipe(istanbul.enforceThresholds({ thresholds: { global: 95 } }));

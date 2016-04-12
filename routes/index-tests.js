@@ -72,8 +72,8 @@ describe('index', function() {
                 })
         })
     });
-    
-        describe('/register', function() {
+
+    describe('/register', function() {
         it('should return 200 on the register page for anonymous user', function(done) {
             request(app)
                 .get('/register')
