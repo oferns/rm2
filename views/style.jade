@@ -2,22 +2,29 @@ extends _layout
 
 block append body
     .row
-        h1 Headers
-        section.onequarter
-            include ./style/_headers
-        section.half
-            img(src='https://redmouse.blob.core.windows.net/img/rm-260.gif' alt='red mouse')
-            img(src='https://redmouse.blob.core.windows.net/img/logo.gif' alt='red mouse')
-        section.onequarter
-            p Bacon ipsum dolor amet fatback boudin ham bresaola tail cow meatball beef bacon rump tri-tip. Salami boudin shankle kevin, capicola jerky venison turducken corned beef spare ribs tri-tip ribeye pastrami. Kevin corned beef bacon, spare ribs alcatra pork loin meatball biltong pork. Meatball fatback beef alcatra turkey ham leberkas biltong picanha landjaeger t-bone.
-        
-        
+       .twothirdspan
+            .onethird
+                h2 Headers                                    
+                section
+                    include ./style/_headers
+            .twothirds
+                h2 Images
+                section
+                    img(src='https://redmouse.blob.core.windows.net/img/rm-260.gif' alt='red mouse' style='margin:auto')
+            .span
+                h2 Table
+                section
+                    include ./style/_tables
+       .onethirdspan
+            h2 Column text
+            section
+                p Bacon ipsum dolor amet fatback boudin ham bresaola tail cow meatball beef bacon rump tri-tip. Salami boudin shankle kevin, capicola jerky venison turducken corned beef spare ribs tri-tip ribeye pastrami. Kevin corned beef bacon, spare ribs alcatra pork loin meatball biltong pork. Meatball fatback beef alcatra turkey ham leberkas biltong picanha landjaeger t-bone.
+                p Bacon ipsum dolor amet fatback boudin ham bresaola tail cow meatball beef bacon rump tri-tip. Salami boudin shankle kevin, capicola jerky venison turducken corned beef spare ribs tri-tip ribeye pastrami. Kevin corned beef bacon, spare ribs alcatra pork loin meatball biltong pork. Meatball fatback beef alcatra turkey ham leberkas biltong picanha landjaeger t-bone.
+            
     .row
-        h1 Tables
-        include ./style/_tables
-    .row
-        h1 Forms
-        include ./style/_forms
+        section
+            h1 Forms
+            include ./style/_forms
     .row
         h1 Buttons
         include ./style/_buttons

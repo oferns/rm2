@@ -4,11 +4,17 @@ function Login(cp) {
     if (cp === 'undefined' || cp === null) {
         throw new Error('cp is undefined');
     }
+
+    if (!(this instanceof Login)) {
+        return new Login(cp);
+    }
+    
     this.cp = cp;
 }
 
 Login.prototype.sanitize = function(req, res, next) {
     req.sanitizeBody('login[email]').normalizeEmail();
+    return next();
 };
 
 

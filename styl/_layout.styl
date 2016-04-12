@@ -16,6 +16,7 @@ html
 .row
     cf()
     center(95%)
+    border 1px solid $red
     +below(rupture.desktop-cutoff)
         center(98%)
        
@@ -49,9 +50,6 @@ html
                 margin-right 0.25em
 
 section
-    col(1)
-    box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
-    border-radius 0.8em
     margin 1em 0 1em 0
     background-color $white            
     > div, p
@@ -65,15 +63,31 @@ section
     +below(rupture.mobile-cutoff)
         col(1)
 
+.halfspan
+    span(1/2)
+    +below(rupture.mobile-cutoff)
+        span(1)
+
+
 .onethird
     col(1/3)
     +below(rupture.mobile-cutoff)
         col(1)
+        
+.onethirdspan
+    span(1/3)
+    +below(rupture.mobile-cutoff)
+        span(1)
 
 .twothird
     col(2/3)
     +below(rupture.mobile-cutoff)
         col(1)
+
+.twothirdspan
+    span(2/3)
+    +below(rupture.mobile-cutoff)
+        span(1)
 
 .onequarter
     col(1/4)
@@ -92,4 +106,4 @@ section
     +above(rupture.mobile-cutoff)
         > *
             align(both)
-            width auto            
+            width auto          
