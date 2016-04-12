@@ -46,7 +46,8 @@ var process = function (options) {
       .pipe(when(!options.production, maps.init()))
       .pipe(stylus({ use: [jeet(), rupture(), axis()], errors: true, 'include css:': true, paths: ['node_modules'] })).on('error', error)
       .pipe(prefix('> 5% in RO')).on('error', error)
-      .pipe(when(options.production, nano(), maps.write('maps')))
+      .pipe(when(!options.production, maps.write()))      
+      .pipe(when(options.production, nano()))
       .pipe(gulp.dest('public/css'))
       .pipe(tap(done));
     };

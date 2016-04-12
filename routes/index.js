@@ -1,6 +1,6 @@
 'option strict';
 
-var router = require('express').Router();
+var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
 module.exports = function() {
 
