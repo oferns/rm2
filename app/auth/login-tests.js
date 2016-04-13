@@ -11,6 +11,8 @@ var expect = chai.expect;
 
 var login = require('./login');
 
+var validator = require('express-validator').validator;
+
 describe('Login', function() {
     describe('CTor', function() {
         it('should throw an error when passed a null connection object', function() {
@@ -32,17 +34,16 @@ describe('Login', function() {
 
     describe('sanitize', function() {
         it('should call normalizeEmail the login[email] field', function() {
-            
+
             var stubs = {
-                normalizeEmail: function() { },
-                next: function(err, result) { return { err: err, result: result } }                
+                next: function(err, result) { return { err: err, result: result } }
             };
 
             var req = {
                 'body': { 'login[email]': 'TeSt@test.com' },
                 'sanitizeBody': function(field) {
                     return {
-                        'normalizeEmail':stubs.normalizeEmail
+                        'normalizeEmail': validator.normalizeEmail
                     };
                 }
             };
@@ -50,15 +51,12 @@ describe('Login', function() {
             var res = {};
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
-            var normalizeSpy = chai.spy.on(stubs, 'normalizeEmail');
-            var nextSpy = chai.spy.on(stubs, 'next');
+            var normalizeSpy = chai.spy.on(validator, 'normalizeEmail');
             
-            var result = login({}).sanitize(req, {}, stubs.next);
-            
-            expect(sanitizeSpy).to.have.been.called.once;
-            expect(normalizeSpy).to.have.been.called.once;
-            expect(nextSpy).to.have.been.called.once;
-
+            var result = login({}).sanitize(req, {}, function(err){
+                expect(sanitizeSpy).to.have.been.called.once;
+                expect(normalizeSpy).to.have.been.called.once;                
+            });
         });
     });
 })

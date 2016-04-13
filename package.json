@@ -24,6 +24,7 @@
     "express-validator": "^2.20.3",
     "friendly-url": "^1.0.3",
     "html-entities": "^1.2.0",
+    "i18n": "^0.8.1",
     "i18n-2": "^0.6.3",
     "method-override": "^2.3.5",
     "moment": "^2.12.0",
