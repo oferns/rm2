@@ -58,20 +58,7 @@ describe('index', function() {
         })
     });
 
-    describe('/login', function() {
-        it('should return 200 on the stylepage for anonymous user', function(done) {
-            request(app)
-                .get('/login')
-                .expect('Content-Type', /html/)
-                .expect(200)
-                .end(function(err, response) {
-                    if (err) {
-                        return done(err);
-                    }
-                    return done(null, response);
-                })
-        })
-    });
+
 
     describe('/register', function() {
         it('should return 200 on the register page for anonymous user', function(done) {

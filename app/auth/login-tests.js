@@ -13,35 +13,34 @@ var login = require('./login');
 
 var validator = require('express-validator').validator;
 
-describe('Login', function() {
-    describe('CTor', function() {
-        it('should throw an error when passed a null connection object', function() {
-            assert.throws(function() {
-                login(null);
-            }, function(err) {
+var sanitizer = require('express-validator').sanitize;
+
+describe('Login', function () {
+    describe('CTor', function () {
+        it('should throw an error when passed a null connection object', function () {
+            assert.throws(function () {
+                var l = login(null);
+            }, function (err) {
                 if ((err instanceof Error) && /cp is undefined/.test(err)) {
                     return true;
                 }
             })
         });
 
-        it('should return the Login object when passed an object', function() {
-            assert.doesNotThrow(function() {
-                login({});
-            }, Error, 'This erroor should not be thrown');
+        it('should return the Login object when passed an object', function () {
+            assert.doesNotThrow(function () {
+                var l = login({});
+
+            }, Error, 'This error should not be thrown');
         });
     });
 
-    describe('sanitize', function() {
-        it('should call normalizeEmail the login[email] field', function() {
-
-            var stubs = {
-                next: function(err, result) { return { err: err, result: result } }
-            };
+    describe('sanitize', function () {
+        it('should call normalizeEmail the login[email] field', function () {
 
             var req = {
                 'body': { 'login[email]': 'TeSt@test.com' },
-                'sanitizeBody': function(field) {
+                'sanitizeBody': function (field) {
                     return {
                         'normalizeEmail': validator.normalizeEmail
                     };
@@ -52,10 +51,10 @@ describe('Login', function() {
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var normalizeSpy = chai.spy.on(validator, 'normalizeEmail');
-            
-            var result = login({}).sanitize(req, {}, function(err){
+
+            var result = login({}).sanitize(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.once;
-                expect(normalizeSpy).to.have.been.called.once;                
+                expect(normalizeSpy).to.have.been.called.once;
             });
         });
     });

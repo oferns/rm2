@@ -41,6 +41,8 @@ public/
 
 # vs code
 .vscode/
+jsconfig.json
 
 # wallaby.js
 wallaby.js
+

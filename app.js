@@ -5,7 +5,7 @@ var path = require('path'); // For resolving paths
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser'); // Parsing the body into javascript objects and properties
 var validator = require('express-validator'); // Used for validation and Sanitization of ALL input parameters and form values
-
+var cp = {}; // TODO: Conneciton pool here
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
@@ -17,7 +17,7 @@ app.use(validator());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
-app.use(require('./routes/index')());
+app.use(require('./routes/index')(cp));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
