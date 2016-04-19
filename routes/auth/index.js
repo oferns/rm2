@@ -3,7 +3,7 @@
 var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
 module.exports = function (cp) {
-
+    
     var login = require('../../app/auth/login')(cp);
 
     router.route('/login')
