@@ -44,22 +44,16 @@ describe('index', function () {
                 .expect(200, done);
         });
         
-        it('should return 302 when POSTING valid details', function(done){
+        it('should return 302 when POSTING valid details', function(done){            
            request(app)
                 .post('/login')
-                .field('login[email]', 'test@test.com')
-                .field('login[password]', 'Th1s1s4V4l1dP4$$w0rd')
+                .type('form')
+                .send({'login[email]': 'test@test.com'})
+                .send({'login[password]': 'Th1s1s4V4l1dP4$$w0rd'})
                 .expect(302)
-                .end(function (err, response) {
-                    if (err) {
-                        return done(err);
-                    }
-                    
-                    return done(null, response);
-                })
-            
+                .end(done)            
         }),
-        
+
         it('should return 422 when POSTING empty values', function(done){            
            request(app)
                 .post('/login')
