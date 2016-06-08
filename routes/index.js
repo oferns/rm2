@@ -12,6 +12,13 @@ module.exports = function(cp) {
         });
         
 
+
+    router.route('/error')
+        .get(function(req, res, next) {                        
+            return next(new Error('This is a test error'));
+        });
+        
+
     router.route('/style')
         .get(function(req, res, next) {
             return res.render('style');

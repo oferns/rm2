@@ -12,7 +12,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
 app.use(bodyParser.json()); // For the API
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 
 app.use('/', express.static(path.join(__dirname, 'public')));
@@ -24,6 +24,16 @@ app.use(function (req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
+});
+
+app.use(function (err, req, res, next) {
+
+    res.status(err.status || 500);
+
+    return res.render(res.statusCode, {
+        message: err.message,
+        error: app.get('env') === 'production' ? {} : err
+    });
 });
 
 

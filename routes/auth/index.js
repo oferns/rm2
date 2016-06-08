@@ -12,12 +12,12 @@ module.exports = function (cp) {
         })
         .post(login.sanitize, login.validate, login.execute, function (req, res, next) {
             switch(res.statusCode){
-                case 200: return res.redirect('/');
+                case 200: return res.redirect('/home');
                 case 422: return res.render('login', { 'errors': req.errors, 'login': req.body.login || {} });
                 default: return next();
             }
         });
-
+        
 
     return router;
 
