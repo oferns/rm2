@@ -32,7 +32,7 @@ describe('index', function () {
         execute: function (req, res, next) { return next() }
     };
 
-    var router = require('../../routes/auth/index')({});
+    var router = require('../../routes/auth/index')(loginMock);
 
     app.use(router);
 
@@ -40,37 +40,40 @@ describe('index', function () {
         it('should return 200 GETTING the login page', function (done) {
             request(app)
                 .get('/login')
+                .expect(200)
                 .expect('Content-Type', /html/)
-                .expect(200, done);
+                .expect(function (res) {
+                    res.text.should.match(/form name="login" action="\/login" method="post"/);
+                })
+                .end(done);
         });
 
         it('should return 302 to /home when POSTING valid details', function (done) {
             request(app)
                 .post('/login')
                 .type('form')
-                .send({ 'login[email]': 'test@test.com' })
-                .send({ 'login[password]': 'Th1s1s4V4l1dP4$$w0rd' })
+                .send({ 'login[email]': 'test@test.com', 'login[password]': 'Th1s1s4V4l1dP4$$w0rd'  })
                 .expect(302)
                 .expect('Content-Type', /text/)
                 .expect('Location', '/home')
                 .end(done);
-        }),
+        });
 
-            it('should return 422 when POSTING empty values', function (done) {
-                request(app)
-                    .post('/login')
-                    .expect('Content-Type', /html/)
-                    .expect(422)
-                    .end(function (err, res) {
-                        if (err) {
-                            return done(err);
-                        }
-                        res.text.should.match(/form name="login" action="\/login" method="post"/);
-                        res.text.should.match(/Email is not valid/);
-                        res.text.should.match(/Invalid password length. Should be between 6-50/);                                                
-                        return done(null, res);
-                    })
-            });
+        it('should return 422 when POSTING empty values', function (done) {
+            request(app)
+                .post('/login')
+                .expect('Content-Type', /html/)
+                .expect(422)
+                .expect(function (res) {
+                    res.text.should.match(/form name="login" action="\/login" method="post"/);
+                    res.text.should.match(/Email is not valid/);
+                    res.text.should.match(/Invalid password length. Should be between 6-50/);
+                })
+                .end(function(err, result) {
+                     var t = "";
+                     return done();
+                });
+        });
 
     });
 });

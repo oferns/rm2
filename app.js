@@ -28,9 +28,10 @@ app.use(function (req, res, next) {
 
 app.use(function (err, req, res, next) {
 
+    var status = err.status == 404 ? err.status : 500; // All 500 errors show the 500m page  
     res.status(err.status || 500);
 
-    return res.render(res.statusCode, {
+    return res.render(status, {
         message: err.message,
         error: app.get('env') === 'production' ? {} : err
     });

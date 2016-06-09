@@ -3,16 +3,14 @@
 var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
 module.exports = function(cp) {
-
-    var authRoutes = require('./auth/index')(cp);
+    var login = require('../app/auth/login')(cp);
+    var authRoutes = require('./auth/index')(login);
      
     router.route('/')
         .get(function(req, res, next) {
             return res.render('home');
         });
         
-
-
     router.route('/error')
         .get(function(req, res, next) {                        
             return next(new Error('This is a test error'));

@@ -19,59 +19,54 @@ var should = chai.should();
 var expect = chai.expect;
 
 
-describe('index', function() {
+describe('index', function () {
 
     var router = require('../routes/index')();
     app.use(router);
 
-    describe('/', function() {
+    describe('/', function () {
 
-        it('should return 200 on the homepage for anonymous user', function(done) {
-
+        it('should return 200 on the homepage for anonymous user', function (done) {
             request(app)
                 .get('/')
                 .expect('Content-Type', /html/)
                 .expect(200)
-                .end(function(err, response) {
-                    if (err) {
-                        return done(err);
-                    }
-                    return done(null, response);
-                })
-        })
+                .end(done);
+        });
     });
 
-    describe('/style', function() {
+    describe('/style', function () {
 
-        it('should return 200 on the stylepage for anonymous user', function(done) {
+        it('should return 200 on the stylepage for anonymous user', function (done) {
 
             request(app)
                 .get('/style')
                 .expect('Content-Type', /html/)
                 .expect(200)
-                .end(function(err, response) {
-                    if (err) {
-                        return done(err);
-                    }
-                    return done(null, response);
-                })
-        })
+                .end(done);
+        });
     });
 
 
 
-    describe('/register', function() {
-        it('should return 200 on the register page for anonymous user', function(done) {
+    describe('/register', function () {
+        it('should return 200 on the register page for anonymous user', function (done) {
             request(app)
                 .get('/register')
                 .expect('Content-Type', /html/)
                 .expect(200)
-                .end(function(err, response) {
-                    if (err) {
-                        return done(err);
-                    }
-                    return done(null, response);
-                })
-        })
+                .end(done);
+        });
     });
+
+    describe('/error', function () {
+        it('should throw a Custom Error to test the 500 route', function (done) {
+            request(app)
+                .get('/error')
+                .expect('Content-Type', /html/)
+                .expect(500)
+                .end(done);
+        });
+    });
+
 });
