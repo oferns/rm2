@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server.js"
   },
   "description": "redmouse squeakage",
   "author": {
@@ -72,6 +72,7 @@
     "rimraf": "^2.5.2",
     "rupture": "^0.6.1",
     "selenium-webdriver": "^2.53.1",
+    "sinon": "^1.17.4",
     "stylus": "^0.54.2",
     "stylus-type-utils": "^0.0.3",
     "supertest": "^1.2.0",

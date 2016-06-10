@@ -1,0 +1,22 @@
+'option strict';
+
+var router = require('express').Router({ 'mergeParams': true, 'strict': true });
+
+module.exports = function (register) {
+
+    router.route('/register')
+        .get(function (req, res, next) {
+            return res.render('auth/register');
+        })
+        .post(register.sanitize, register.validate, register.execute, function (req, res, next) {
+            switch (res.statusCode) {
+                case 200: return res.redirect('back');
+                case 422: return res.render('auth/register');
+                default: return next();
+            }
+        });
+ 
+
+    return router;
+
+}

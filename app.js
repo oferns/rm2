@@ -15,6 +15,8 @@ app.use(bodyParser.json()); // For the API
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
 
+app.locals.errors = {};
+
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.use(require('./routes/index')(cp));

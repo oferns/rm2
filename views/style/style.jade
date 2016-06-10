@@ -1,4 +1,4 @@
-extends _layout
+extends ../_layout
 
 block append body
     .row
@@ -6,7 +6,7 @@ block append body
             .onethird
                 h2 Headers                                    
                 section
-                    include ./style/_headers
+                    include ./_headers
             .twothirds
                 h2 Images
                 section
@@ -14,7 +14,7 @@ block append body
             .span
                 h2 Table
                 section
-                    include ./style/_tables
+                    include ./_tables
        .onethirdspan
             h2 Column text
             section
@@ -24,7 +24,7 @@ block append body
     .row
         section
             h1 Forms
-            include ./style/_forms
+            include ./_forms
     .row
         h1 Buttons
-        include ./style/_buttons
+        include ./_buttons

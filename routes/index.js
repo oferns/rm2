@@ -3,8 +3,6 @@
 var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
 module.exports = function(cp) {
-    var login = require('../app/auth/login')(cp);
-    var authRoutes = require('./auth/index')(login);
      
     router.route('/')
         .get(function(req, res, next) {
@@ -19,15 +17,9 @@ module.exports = function(cp) {
 
     router.route('/style')
         .get(function(req, res, next) {
-            return res.render('style');
+            return res.render('style/style');
         });
                 
-    router.route('/register')
-        .get(function(req, res, next){
-            return res.render('register', {'errors' : {}, 'register':{} });            
-        });
-
-    router.use('/', authRoutes);        
         
     return router;
 }

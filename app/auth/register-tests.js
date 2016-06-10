@@ -3,48 +3,49 @@
 var assert = require('assert');
 var chai = require('chai');
 var spies = require('chai-spies');
-var sinon = require('sinon');
 
 chai.use(spies);
 
 var should = chai.should();
 var expect = chai.expect;
 
-var login = require('./login');
+var register = require('./register');
 
+var validator = require('express-validator').validator;
 
 var sanitizer = require('express-validator').sanitize;
 
-describe('Login', function () {
+
+describe('register', function () {
     describe('CTor', function () {
         it('should throw an error when passed a null connection object', function () {
             assert.throws(function () {
-                var l = login(null);
+                var l = register(null);
             }, function (err) {
                 if ((err instanceof Error) && /cp is undefined/.test(err)) {
                     return true;
                 }
-            });
+            })
         });
 
-        it('should return the Login object when passed an object', function (done) {
+        it('should return the Register object when passed an object', function () {
             assert.doesNotThrow(function () {
-                var l = login({});
+                var l = register({});
+
             }, Error, 'This error should not be thrown');
-            return done();
         });
     });
 
     describe('sanitize', function () {
-        it('should call normalizeEmail the login[email] field', function (done) {
-
-            var sanitizeBody = sinon.stub();
-            var validator = sinon.stub().returns(sanitizeBody);
-            var normalizeEmail = sinon.stub().returns(validator);
+        it('should call normalizeEmail the register[email] field', function () {
 
             var req = {
-                'body': { 'login[email]': 'TeSt@test.com' },
-                'sanitizeBody': sanitizeBody                
+                'body': { 'register[email]': 'TeSt@test.com' },
+                'sanitizeBody': function (field) {
+                    return {
+                        'normalizeEmail': validator.normalizeEmail
+                    };
+                }
             };
 
             var res = {};
@@ -52,15 +53,10 @@ describe('Login', function () {
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var normalizeSpy = chai.spy.on(validator, 'normalizeEmail');
 
-            var result = login({}).sanitize(req, {}, function (err) {
+            var result = register({}).sanitize(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.once;
                 expect(normalizeSpy).to.have.been.called.once;
-                return done();
             });
         });
-    });
-
-    describe('validate', function () {
-        it('should ')
     });
 })

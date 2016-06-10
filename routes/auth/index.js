@@ -2,21 +2,16 @@
 
 var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
-module.exports = function (login) {
-    
-    router.route('/login')
-        .get(function (req, res, next) {
-            return res.render('login', { 'errors': req.errors || {}, 'login': {} });
-        })
-        .post(login.sanitize, login.validate, login.execute, function (req, res, next) {
-            switch(res.statusCode){
-                case 200: return res.redirect('/home');
-                case 422: return res.render('login', { 'errors': req.errors, 'login': req.body.login });
-                default: return next(new Error('Fuck knnows what went wrong there'));
-            }
-        });
-        
+module.exports = function(cp) {
 
-    return router;
+    var login = require('../app/auth/login')(cp);
+    var loginRoutes = require('./auth/login')(login);
+    router.use('/', loginRoutes);        
 
+
+    var register = require('../app/auth/register')(cp);
+    var registerRoutes = require('./auth/register')(register);
+    router.use('/', registerRoutes);        
+
+   return router;
 }

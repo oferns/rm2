@@ -21,7 +21,7 @@ var expect = chai.expect;
 
 describe('index', function () {
 
-    var router = require('../routes/index')();
+    var router = require('./index')();
     app.use(router);
 
     describe('/', function () {
@@ -41,18 +41,6 @@ describe('index', function () {
 
             request(app)
                 .get('/style')
-                .expect('Content-Type', /html/)
-                .expect(200)
-                .end(done);
-        });
-    });
-
-
-
-    describe('/register', function () {
-        it('should return 200 on the register page for anonymous user', function (done) {
-            request(app)
-                .get('/register')
                 .expect('Content-Type', /html/)
                 .expect(200)
                 .end(done);
