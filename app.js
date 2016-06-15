@@ -9,7 +9,7 @@ var cp = {}; // TODO: Conneciton pool here
 var app = express();
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(bodyParser.json()); // For the API
 app.use(bodyParser.urlencoded({ extended: true }));

@@ -12,10 +12,11 @@ form(name="login", action="/login", method="post")
                 id='login[email]'
                 type='email'
                 name='login[email]'
+                value=login['email']
                 placeholder='you@example.com'
                 data-rule-required='true'
                 data-msg-required='Please enter your email address'
-                )= login.email
+                )
             label(
                 id='login[email]-error'
                 for='login[email]').error= errors['login[email]'] ? errors['login[email]'].msg : 'Email is incorrect'
@@ -28,6 +29,7 @@ form(name="login", action="/login", method="post")
                 id='login[password]'
                 type='password'
                 name='login[password]'
+                value=login['password']
                 placeholder='*******'
                 data-rule-required='true'
                 data-msg-required='Please enter your password'
@@ -43,7 +45,7 @@ form(name="login", action="/login", method="post")
                 id='login[remember]'
                 type='checkbox'
                 name='login[remember]'
-                value=login.remember
+                value=login['remember']
                 )
             label(
                 for='login[remember]'

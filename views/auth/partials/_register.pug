@@ -12,8 +12,8 @@ form(name="register", action="/register", method="post")
                 type='text' 
                 name='register[name]'
                 placeholder='Your name'
-                value=register[name]
-                )= register.name
+                value=register['name']
+                )
             label(
                 id='register[name]-error'
                 for='register[name]').error= errors['register[name]'] ? errors['register[name]'].msg : ''
@@ -27,9 +27,10 @@ form(name="register", action="/register", method="post")
                 type='email'
                 name='register[email]'
                 placeholder='you@example.com'
+                value=register['email']
                 data-rule-required='true'
                 data-msg-required='Please enter your email address'
-                )= register.email
+                )
             label(
                 id='register[email]-error'
                 for='register[email]').error= errors['register[email]'] ? errors['register[email]'].msg : ''
@@ -42,6 +43,7 @@ form(name="register", action="/register", method="post")
                 id='register[password]'
                 type='password'
                 name='register[password]'
+                value=register['password']                
                 placeholder='*******'
                 data-rule-required='true'
                 data-msg-required='Please enter your password'
@@ -58,6 +60,7 @@ form(name="register", action="/register", method="post")
                 id='register[repassword]'
                 type='password'
                 name='register[repassword]'
+                value=register['repassword']                
                 placeholder='*******'
                 data-rule-required='true'
                 data-msg-required='Please enter your repassword'

@@ -12,9 +12,6 @@ var expect = chai.expect;
 
 var login = require('./login');
 
-
-var sanitizer = require('express-validator').sanitize;
-
 describe('Login', function () {
     describe('CTor', function () {
         it('should throw an error when passed a null connection object', function () {
@@ -38,19 +35,15 @@ describe('Login', function () {
     describe('sanitize', function () {
         it('should call normalizeEmail the login[email] field', function (done) {
 
-            var sanitizeBody = sinon.stub();
-            var validator = sinon.stub().returns(sanitizeBody);
-            var normalizeEmail = sinon.stub().returns(validator);
-
             var req = {
                 'body': { 'login[email]': 'TeSt@test.com' },
-                'sanitizeBody': sanitizeBody                
             };
 
-            var res = {};
+            req.sanitizeBody = sinon.stub().returns(req);
+            req.normalizeEmail = sinon.stub().returns(req);
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
-            var normalizeSpy = chai.spy.on(validator, 'normalizeEmail');
+            var normalizeSpy = chai.spy.on(req, 'normalizeEmail');
 
             var result = login({}).sanitize(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.once;
@@ -61,6 +54,9 @@ describe('Login', function () {
     });
 
     describe('validate', function () {
-        it('should ')
+        it('should validate the email address', function(done){
+
+            return done();
+        });
     });
 })

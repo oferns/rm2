@@ -4,6 +4,7 @@ var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
 module.exports = function(cp) {
      
+    var authRoutes = require('./auth/index')(cp); 
     router.route('/')
         .get(function(req, res, next) {
             return res.render('home');
@@ -20,6 +21,6 @@ module.exports = function(cp) {
             return res.render('style/style');
         });
                 
-        
+    router.use('/', authRoutes);
     return router;
 }

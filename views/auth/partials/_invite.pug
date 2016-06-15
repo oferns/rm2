@@ -15,5 +15,4 @@ form(name="invite", action="/invite", method="post")
                 )= invite.name
             label(
                 id='invite[name]-error'
-                for='invite[name]').error= errors['invite[name]'] ? errors['invite[name]'].msg : ''
-        
+                for='invite[name]').error= errors['invite[name]'] ? errors['invite[name]'].msg : ''        

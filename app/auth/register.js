@@ -13,18 +13,21 @@ function Register(cp) {
 }
 
 Register.prototype.sanitize = function (req, res, next) {
-    req.body.login = req.body.login || {};
-    req.body.login['email'] = req.body.login['email'] || '';
-    req.sanitizeBody('login[email]').normalizeEmail();
+    req.body.register = req.body.register || {};
+    req.sanitizeBody('register[name]').stripLow();
+    req.sanitizeBody('register[email]').normalizeEmail();
+    req.sanitizeBody('register[password]').stripLow();
+    req.sanitizeBody('register[repassword]').stripLow();
     return next();
 };
 
 
 Register.prototype.validate = function (req, res, next) {
 
-    req.check('login[email]', 'An email address is required.').notEmpty().isEmail().withMessage('Email is not valid');
-    req.check('login[password]', 'A password is required').notEmpty().isLength(6, 50).withMessage('Invalid password length. Should be between 6-50');
-
+    req.check('register[name]', 'An name is required.').notEmpty().withMessage('Please enter a valid name');
+    req.check('register[email]', 'An email address is required.').notEmpty().isEmail().withMessage('Please enter a valid email address');
+    req.check('register[password]', 'A password is required').notEmpty().isLength(6, 50).withMessage('Invalid password length. Should be between 6-50');
+    req.check('register[repassword]', 'Passwords do not match').equals(req.body.register['password']);
     req.errors = req.validationErrors(true);
 
     if (req.errors) {

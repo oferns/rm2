@@ -9,7 +9,7 @@ var validator = require('express-validator');
 var app = express();
 
 app.set('views', path.join(__dirname, '../../views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'pug');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(validator());
@@ -17,6 +17,7 @@ app.use(validator());
 var assert = require('assert');
 var chai = require('chai');
 var spies = require('chai-spies');
+var sinon = require('sinon');
 
 chai.use(spies);
 
@@ -26,15 +27,13 @@ var expect = chai.expect;
 
 describe('/login', function () {
 
-    var login = require('../../app/auth/login')({});
-
-    var loginMock = {
-        sanitize: login.sanitize,
-        validate: login.validate,
-        execute: function (req, res, next) { return next() }
+    var svedMock = {
+        sanitize: sinon.stub(),
+        validate: sinon.stub(),
+        execute: sinon.stub()
     };
 
-    var router = require('../../routes/auth/login')(loginMock);
+    var router = require('../../routes/auth/login')(svedMock);
 
     app.use(router);
 
@@ -69,7 +68,7 @@ describe('/login', function () {
                 res.text.should.match(/form name="login" action="\/login" method="post"/);
                 res.text.should.match(/Email is not valid/);
                 res.text.should.match(/Invalid password length. Should be between 6-50/);
-            })
+            })               
             .end(done);
     });
 
