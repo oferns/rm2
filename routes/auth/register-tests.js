@@ -37,7 +37,7 @@ describe('/register', function () {
         'register[repassword]': 'Th1s1s4V4l1dP4$$w0rd',
     };
 
-    var router = require('../../routes/auth/register')(sveMock(200));
+    var router = require('../../routes/auth/register')(new sveMock(200));
 
     app.use(router);
 
