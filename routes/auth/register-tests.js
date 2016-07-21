@@ -24,18 +24,11 @@ chai.use(spies);
 var should = chai.should();
 var expect = chai.expect;
 
-
+var sveMock = require('../sveMock');
 app.locals.errors = {};
 
 
 describe('/register', function () {
-
-    var svedMock = {
-        sanitize: sinon.stub(),
-        validate: sinon.stub(),
-        execute: sinon.stub()
-    };
-
 
     var regMock = {
         'register[name]': 'test test',
@@ -44,7 +37,7 @@ describe('/register', function () {
         'register[repassword]': 'Th1s1s4V4l1dP4$$w0rd',
     };
 
-    var router = require('../../routes/auth/register')(svedMock);
+    var router = require('../../routes/auth/register')(sveMock(200));
 
     app.use(router);
 

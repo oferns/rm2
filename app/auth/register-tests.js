@@ -1,54 +1,64 @@
 'use strict';
 
-var assert = require('assert');
 var chai = require('chai');
 var spies = require('chai-spies');
 var sinon = require('sinon');
+var assert = chai.assert;
 
 chai.use(spies);
 
 var should = chai.should();
 var expect = chai.expect;
 
+// The thing we are going to test
 var register = require('./register');
 
-var validator = require('express-validator').validator;
+// A valid mock request with just the properties and methods we want to test
+var req = {
+    'body': {
+        'register': {
+            'name': 'Testy McTestface',
+            'register[email]': 'TeSt@test.com',
+            'register[password]': 'Th1$1$4v4l1dP4$$w0rd',
+            'register[repassword]': 'Th1$1$4v4l1dP4$$w0rd'
+        }
+    }
+};
 
-var sanitizer = require('express-validator').sanitize;
+req.sanitizeBody = sinon.stub().returns(req),
+    req.normalizeEmail = sinon.stub().returns(req),
+    req.stripLow = sinon.stub().returns(req),
+    req.check = sinon.stub().returns(req),
+    req.equals = sinon.stub().returns(req),
+    req.isEmail = sinon.stub().returns(req),
+    req.notEmpty = sinon.stub().returns(req),
+    req.isLength = sinon.stub().returns(req),
+    req.withMessage = sinon.stub().returns(req),
+    req.validationErrors = sinon.stub().returns(req)
+
 
 
 describe('register', function () {
     describe('CTor', function () {
-        it('should throw an error when passed a null connection object', function () {
+        it('should throw an error when passed a null connection object', function (done) {
             assert.throws(function () {
                 var l = register(null);
-            }, function (err) {
-                if ((err instanceof Error) && /cp is undefined/.test(err)) {
-                    return true;
-                }
-            })
+            }, /cp is undefined/);
+            return done();
         });
 
-        it('should return the Register object when passed an object', function () {
+        it('should return the Register object when passed an object', function (done) {
             assert.doesNotThrow(function () {
                 var l = register({});
-
+                assert.instanceOf(l, register, 'We have a register object');
             }, Error, 'This error should not be thrown');
+            return done();
         });
     });
 
     describe('sanitize', function () {
 
         it('should call sanitizeBody and stripLow on register[name]', function (done) {
-            var req = {
-                'body': {
-                    'register[name]': 'Testy McTestface'
-                },
-            };
-
-            req.sanitizeBody = sinon.stub().returns(req);
-            req.normalizeEmail = sinon.stub().returns(req);
-            req.stripLow = sinon.stub().returns(req);
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var stripLowSpy = chai.spy.on(req, 'stripLow');
@@ -62,16 +72,6 @@ describe('register', function () {
 
         it('should call sanitizeBody and normalizeEmail on register[email]', function (done) {
 
-            var req = {
-                'body': {
-                    'register[email]': 'TeSt@test.com'
-                },
-            };
-
-            req.sanitizeBody = sinon.stub().returns(req);
-            req.normalizeEmail = sinon.stub().returns(req);
-            req.stripLow = sinon.stub().returns(req);
-
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var normalizeSpy = chai.spy.on(req, 'normalizeEmail');
 
@@ -84,15 +84,6 @@ describe('register', function () {
         });
 
         it('should call sanitizeBody and stripLow on register[password]', function (done) {
-            var req = {
-                'body': {
-                    'register[password]': 'Th1$1$4v4l1dP4$$w0rd'
-                },
-            };
-
-            req.sanitizeBody = sinon.stub().returns(req);
-            req.normalizeEmail = sinon.stub().returns(req);
-            req.stripLow = sinon.stub().returns(req);
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var stripLowSpy = chai.spy.on(req, 'stripLow');
@@ -234,5 +225,9 @@ describe('register', function () {
             })
         });
 
+        it('should call equals on password and repassword', function (done) {
+
+            return done();
+        });
     })
 })
