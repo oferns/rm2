@@ -6,7 +6,7 @@ module.exports = function (register) {
 
     router.route('/register')
         .get(function (req, res, next) {
-            return res.render('auth/register');
+            return res.render('auth/register',{ 'errors': req.errors || {}, 'register': {} });
         })
         .post(register.sanitize, register.validate, register.execute, function (req, res, next) {
             switch (res.statusCode) {

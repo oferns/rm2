@@ -1,6 +1,5 @@
 'use strict';
 
-
 var chai = require('chai');
 var spies = require('chai-spies');
 var sinon = require('sinon');

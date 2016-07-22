@@ -1,20 +1,6 @@
 'use strict';
 
-var express = require('express');
 var request = require('supertest');
-var path = require('path');
-var bodyParser = require('body-parser');
-var validator = require('express-validator');
-
-var app = express();
-
-app.set('views', path.join(__dirname, '../../views'));
-app.set('view engine', 'pug');
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(validator());
-
-var mockApp = require('../../appMock');
 
 var assert = require('assert');
 var chai = require('chai');
@@ -27,11 +13,15 @@ var should = chai.should();
 var expect = chai.expect;
 
 var sveMock = require('../sveMock');
+var loginRoute = require('../../routes/auth/login');
+var appMock = require('../../appMock');
 
 describe('/login', function () {
 
     it('should return 200 GETTING the login page', function (done) {
-        var router = require('../../routes/auth/login')(sveMock(200));
+        var app = appMock();
+        var mock = sveMock(200);
+        var router = loginRoute(mock);
         app.use(router);
         request(app)
             .get('/login')
@@ -45,7 +35,10 @@ describe('/login', function () {
 
 
     it('should return 302 to /home when POSTING valid details', function (done) {
-        var router = require('../../routes/auth/login')(sveMock(302));
+        var app = appMock();
+        var mock = sveMock(200);
+        var router = loginRoute(mock);
+
         app.use(router);
         request(app)
             .post('/login')
@@ -57,9 +50,11 @@ describe('/login', function () {
             .end(done);
     });
 
-
     it('should return 422 when POSTING empty values', function (done) {
-        var router = require('../../routes/auth/login')(sveMock(422));
+        var app = appMock();
+        var mock = sveMock(422, { 'login': {}, 'errors': {} });
+        var router = loginRoute(mock);
+
         app.use(router);
         request(app)
             .post('/login')
@@ -69,6 +64,15 @@ describe('/login', function () {
     });
 
     it('should call next if the status code is not 200 or 422', function (done) {
-        return done();
+        var app = new appMock();
+        var mock = new sveMock(404);
+        var router = new loginRoute(mock);
+        
+        app.use(router);
+        request(app)
+            .post('/login')
+            .expect('Content-Type', /text/)
+            .expect(404)
+            .end(done);
     });
 });

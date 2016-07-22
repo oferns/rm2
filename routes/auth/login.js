@@ -14,9 +14,7 @@ module.exports = function (login) {
                 case 422: return res.render('auth/login');
                 default: return next();
             }
-        });
-        
+        });        
 
     return router;
-
 }
