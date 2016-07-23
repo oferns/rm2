@@ -2,19 +2,13 @@
 
 var request = require('supertest');
 
-var assert = require('assert');
 var chai = require('chai');
-var spies = require('chai-spies');
-var sinon = require('sinon');
-
-chai.use(spies);
-
 var should = chai.should();
 var expect = chai.expect;
 
+var appMock = require('../../appMock');
 var sveMock = require('../sveMock');
 var loginRoute = require('../../routes/auth/login');
-var appMock = require('../../appMock');
 
 describe('/login', function () {
 
@@ -32,7 +26,6 @@ describe('/login', function () {
             })
             .end(done);
     });
-
 
     it('should return 302 to /home when POSTING valid details', function (done) {
         var app = appMock();
@@ -64,10 +57,10 @@ describe('/login', function () {
     });
 
     it('should call next if the status code is not 200 or 422', function (done) {
-        var app = new appMock();
-        var mock = new sveMock(404);
-        var router = new loginRoute(mock);
-        
+        var app = appMock();
+        var mock = sveMock(404);
+        var router = loginRoute(mock);
+
         app.use(router);
         request(app)
             .post('/login')

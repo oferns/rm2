@@ -9,6 +9,7 @@ module.exports = function (register) {
             return res.render('auth/register',{ 'errors': req.errors || {}, 'register': {} });
         })
         .post(register.sanitize, register.validate, register.execute, function (req, res, next) {
+            console.log(res.statusCode);
             switch (res.statusCode) {
                 case 200: return res.redirect('/thank-you');
                 case 422: return res.render('auth/register');

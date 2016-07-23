@@ -2,19 +2,9 @@
 
 var request = require('supertest');
 
-var assert = require('assert');
-var chai = require('chai');
-var spies = require('chai-spies');
-var sinon = require('sinon');
-
-chai.use(spies);
-
-var should = chai.should();
-var expect = chai.expect;
-
+var appMock = require('../../appMock');
 var sveMock = require('../sveMock');
 var registerRoute = require('../../routes/auth/register');
-var appMock = require('../../appMock');
 
 describe('/register', function () {
 
@@ -38,7 +28,7 @@ describe('/register', function () {
         var app = appMock();
         var mock = sveMock(200);
         var router = registerRoute(mock);
-
+        
         app.use(router);
         request(app)
             .post('/register')
@@ -47,5 +37,4 @@ describe('/register', function () {
             .expect('Location', '/thank-you')
             .end(done);
     });
-
 });

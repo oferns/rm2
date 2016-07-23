@@ -137,3 +137,9 @@ gulp.task('test', ['pre-test'], function () {
         }))
         .pipe(istanbul.enforceThresholds({ thresholds: { global: 95 } }));
 });
+
+gulp.task('test2', () => {
+    return gulp.src(['routes/**/*-tests.js', 'app/**/*-tests.js'])
+        // gulp-mocha needs filepaths so you can't have any plugins before it
+        .pipe(mocha({reporter: 'nyan'}));
+});
