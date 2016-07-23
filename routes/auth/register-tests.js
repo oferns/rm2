@@ -1,6 +1,7 @@
 'use strict';
 
 var request = require('supertest');
+var sinon = require('sinon');
 
 var appMock = require('../../appMock');
 var sveMock = require('../sveMock');
