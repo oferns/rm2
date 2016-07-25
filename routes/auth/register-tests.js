@@ -1,18 +1,22 @@
 'use strict';
 
+var reload = require('require-reload')(require);
 var request = require('supertest');
-var sinon = require('sinon');
+var chai = require('chai');
+var should = chai.should();
 
 var appMock = require('../../appMock');
 var sveMock = require('../sveMock');
-var registerRoute = require('../../routes/auth/register');
 
 describe('/register', function () {
+    var app;
+    beforeEach(function(){
+        app = new appMock();
+    })
 
     it('should return 200 on the register page for anonymous user', function (done) {
-        var app = appMock();
         var mock = sveMock(200, { 'register': {}, 'errors': {} });
-        var router = registerRoute(mock);
+        var router = reload('../../routes/auth/register')(mock);
 
         app.use(router);
         request(app)
@@ -26,13 +30,13 @@ describe('/register', function () {
     });
 
     it('should return 302 to /thank-you when POSTING valid details', function (done) {
-        var app = appMock();
         var mock = sveMock(200);
-        var router = registerRoute(mock);
+        var router = reload('../../routes/auth/register')(mock);
         
         app.use(router);
         request(app)
             .post('/register')
+            .type('form')
             .expect(302)
             .expect('Content-Type', /text/)
             .expect('Location', '/thank-you')

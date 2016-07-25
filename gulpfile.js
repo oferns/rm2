@@ -27,7 +27,7 @@ var
     exorcist = require('exorcist'),
     // test related
     istanbul = require('gulp-istanbul'),
-    mocha = require('gulp-mocha');
+    mocha = require('gulp-spawn-mocha');
 
 // Error logging utility
 var error = function (err) {
@@ -126,7 +126,7 @@ gulp.task('watch', ['clean'], function (cb) {
 gulp.task('pre-test', function () {
     return gulp.src(['routes/**/*.js', '!routes/**/*-tests.js', 'app/**/*.js', '!app/**/*-tests.js'])
         .pipe(istanbul({ includeUntested: true }))
-        .pipe(istanbul.hookRequire());
+        .pipe(istanbul.hookRequire({ verbose: true }));
 });
 
 gulp.task('test', ['pre-test'], function () {
@@ -136,10 +136,4 @@ gulp.task('test', ['pre-test'], function () {
             dir: './public/coverage'
         }))
         .pipe(istanbul.enforceThresholds({ thresholds: { global: 95 } }));
-});
-
-gulp.task('test2', () => {
-    return gulp.src(['routes/**/*-tests.js', 'app/**/*-tests.js'])
-        // gulp-mocha needs filepaths so you can't have any plugins before it
-        .pipe(mocha({reporter: 'nyan'}));
 });

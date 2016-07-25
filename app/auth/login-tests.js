@@ -4,59 +4,80 @@ var assert = require('assert');
 var chai = require('chai');
 var spies = require('chai-spies');
 var sinon = require('sinon');
+var assert = chai.assert;
 
 chai.use(spies);
 
 var should = chai.should();
 var expect = chai.expect;
 
+
 var login = require('./login');
 
-describe('Login', function () {
+var reqMock = require('../reqMock');
+
+describe('login', function () {
+
+    var req, res;
+
+    beforeEach(function () {
+        req = new reqMock();
+        res = { 'locals': {}, 'statusCode': 200 };
+    });
+
     describe('CTor', function () {
         it('should throw an error when passed a null connection object', function () {
-            assert.throws(function () {
+            expect(function () {
                 var l = login(null);
-            }, function (err) {
-                if ((err instanceof Error) && /cp is undefined/.test(err)) {
-                    return true;
-                }
-            });
+            }).to.throw(Error, /cp is undefined/);
         });
 
-        it('should return the Login object when passed an object', function (done) {
-            assert.doesNotThrow(function () {
-                var l = login({});
-            }, Error, 'This error should not be thrown');
-            return done();
+        it('should return the Login object when passed an object', function () {
+            expect(login({})).to.be.instanceof(login);
         });
     });
 
     describe('sanitize', function () {
-        it('should call normalizeEmail the login[email] field', function (done) {
+        var func = login({}).sanitize();
 
-            var req = {
-                'body': { 'login[email]': 'TeSt@test.com' },
-            };
-
-            req.sanitizeBody = sinon.stub().returns(req);
-            req.normalizeEmail = sinon.stub().returns(req);
-
-            var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
-            var normalizeSpy = chai.spy.on(req, 'normalizeEmail');
-
-            var result = login({}).sanitize(req, {}, function (err) {
-                expect(sanitizeSpy).to.have.been.called.once;
-                expect(normalizeSpy).to.have.been.called.once;
-                return done();
+        it('should call normalizeEmail the login[email] field', function () {
+            var result = func(req, {}, function () {
+                expect(req.sanitizeBodySpy).to.have.been.called.once;
+                expect(req.normalizeEmailSpy).to.have.been.called.once;
             });
         });
     });
 
     describe('validate', function () {
-        it('should validate the email address', function(done){
+        var func = login({}).validate();
 
-            return done();
+        it('should validate the email address', function () {
+            func(req, res, function () {
+                expect(req.checkSpy).to.have.been.called.with.exactly('login[email]', 'An email address is required.');
+                expect(req.isEmailSpy).to.have.been.called.once;
+                expect(req.notEmptySpy).to.have.been.called.twice;
+                expect(req.withMessageSpy).to.have.been.called.with.exactly('Email is not valid');
+            })
         });
-    });
+
+        it('should validate the password', function () {
+            func(req, res, function () {
+                expect(req.checkSpy).to.have.been.called.with.exactly('login[password]', 'A password is required');
+                expect(req.isLengthSpy).to.have.been.called.with.exactly(6, 50);
+                expect(req.withMessageSpy).to.have.been.called.with.exactly('Invalid password length. Should be between 6-50');
+            });
+        });
+
+        it('should set the res.locals.errors property', function(){
+            func(req, res, function () {
+                 expect(res.locals.errors).to.not.be.an('undefined');
+            });
+        });
+
+        it('should set the res.statusCode property to a number', function(){
+            func(req, res, function () {
+                 expect(res.statusCode).to.be.an('Number');
+            });            
+        })
+    });    
 })

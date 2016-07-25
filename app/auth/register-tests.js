@@ -48,22 +48,27 @@ describe('register', function () {
         });
 
         it('should return the Register object when passed an object', function (done) {
-            assert.doesNotThrow(function () {
-                var l = register({});
-                assert.instanceOf(l, register, 'We have a register object');
-            }, Error, 'This error should not be thrown');
+            var l = register({});
+            assert.instanceOf(l, register, 'We have a register object');
             return done();
         });
     });
 
     describe('sanitize', function () {
 
+        var func = register({}).sanitize();
+
+        it('should return a middleware function',function(){
+            assert((typeof(func) ==  'function'),"Does not retunr a function");
+            assert(func.length == 3,"Wrong number of argumnents, there should be 3");            
+        })
+
         it('should call sanitizeBody and stripLow on register[name]', function (done) {
 
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var stripLowSpy = chai.spy.on(req, 'stripLow');
 
-            var result = register({}).sanitize(req, {}, function (err) {
+            var result = func(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.with('register[name]');
                 expect(stripLowSpy).to.have.been.called;
                 return done(err);
@@ -75,7 +80,7 @@ describe('register', function () {
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var normalizeSpy = chai.spy.on(req, 'normalizeEmail');
 
-            var result = register({}).sanitize(req, {}, function (err) {
+            var result = func(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.with('register[email]');
                 expect(normalizeSpy).to.have.been.called;
 
@@ -88,7 +93,7 @@ describe('register', function () {
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var stripLowSpy = chai.spy.on(req, 'stripLow');
 
-            var result = register({}).sanitize(req, {}, function (err) {
+            var result = func(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.with('register[password]');
                 expect(stripLowSpy).to.have.been.called;
                 return done(err);
@@ -109,7 +114,7 @@ describe('register', function () {
             var sanitizeSpy = chai.spy.on(req, 'sanitizeBody');
             var stripLowSpy = chai.spy.on(req, 'stripLow');
 
-            var result = register({}).sanitize(req, {}, function (err) {
+            var result = func(req, {}, function (err) {
                 expect(sanitizeSpy).to.have.been.called.with.exactly('register[repassword]');
                 expect(stripLowSpy).to.have.been.called;
                 return done(err);
@@ -119,6 +124,13 @@ describe('register', function () {
     });
 
     describe('validate', function () {
+        var func = register({}).validate();
+
+        it('should return a middleware function',function(){
+            assert((typeof(func) ==  'function'),"Does not retunr a function");
+            assert(func.length == 3,"Wrong number of argumnents, there should be 3");            
+        })
+
         it('should call notEmpty, isLength, and withMessage register[name]', function (done) {
             var req = {
                 'body': {
@@ -147,12 +159,12 @@ describe('register', function () {
             var notEmptySpy = chai.spy.on(req, 'notEmpty');
             var withMessageSpy = chai.spy.on(req, 'withMessage');
 
-            var result = register({}).validate(req, res, function (err) {
+            var result = func(req, res, function (err) {
                 expect(checkSpy).to.have.been.called.with.exactly('register[name]', 'An name is required.');
                 expect(notEmptySpy).to.have.been.called;
                 expect(withMessageSpy).to.have.been.called.with.exactly('Please enter a valid name');
                 return done(err);
-            })
+            });
         });
 
         it('should call notEmpty, isEmail, and withMessage register[email]', function (done) {
@@ -182,7 +194,7 @@ describe('register', function () {
             var isEmailSpy = chai.spy.on(req, 'isEmail');
             var withMessageSpy = chai.spy.on(req, 'withMessage');
 
-            var result = register({}).validate(req, res, function (err) {
+            var result = func(req, res, function (err) {
                 expect(checkSpy).to.have.been.called.with.exactly('register[email]', 'An email address is required.');
                 expect(isEmailSpy).to.have.been.called;
                 expect(withMessageSpy).to.have.been.called.with.exactly('Please enter a valid email address');
@@ -217,7 +229,7 @@ describe('register', function () {
             var isLengthSpy = chai.spy.on(req, 'isLength');
             var withMessageSpy = chai.spy.on(req, 'withMessage');
 
-            var result = register({}).validate(req, res, function (err) {
+            var result = func(req, res, function (err) {
                 expect(checkSpy).to.have.been.called.with.exactly('register[password]', 'A password is required');
                 expect(isLengthSpy).to.have.been.called.with.exactly(6, 50);
                 expect(withMessageSpy).to.have.been.called.with.exactly('Invalid password length. Should be between 6-50');

@@ -36,28 +36,43 @@ describe('sveMock', function () {
     });
 
     describe('sanitize', function () {
+        var func = sveMock().sanitize();
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        })
+
         it('should call next', function (done) {
-            var l = sveMock();
+
             var mock = {
                 next: function () { }
             };
 
+
             var nextSpy = chai.spy.on(mock, 'next');
-            l.sanitize({}, {}, mock.next);
+
+            func({}, {}, mock.next);
             expect(nextSpy).to.have.been.called.once;
             return done();
         });
     });
 
     describe('validate', function () {
+        var func = sveMock().validate();
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        })
+
         it('should call next', function (done) {
-            var l = sveMock();
             var mock = {
                 next: function () { }
             };
 
             var nextSpy = chai.spy.on(mock, 'next');
-            l.validate({}, {}, mock.next);
+            func({}, {}, mock.next);
             expect(nextSpy).to.have.been.called.once;
             return done();
 
@@ -65,26 +80,39 @@ describe('sveMock', function () {
     });
 
     describe('execute', function () {
-        it('should set the statusCode on the response object (res)',function(done){
+
+        it('should return a middleware function', function () {
+            var func = sveMock().execute();
+            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        })
+
+        it('should set the statusCode on the response object (res)', function (done) {
             var code = Math.floor(Math.random() * (600 - 100) + 100);
-            var l = sveMock(code);
+            var func = sveMock(code).execute();
             var res = {};
-            l.execute({},res,function(){});
+            func({}, res, function () { });
             assert(res.statusCode === code);
-            return done();                        
+            return done();
         });
 
-        it('should call next', function (done) {
-            var l = sveMock();
+        it('should set the locals on the response object (res)', function () {
+            var locals = { 'entity': {}, 'errors': {} };
+            var func = sveMock(0, locals).execute();
+            var res = {};
+            func({}, res, function () { });
+            assert(res.locals == locals, 'Locals objects do not match');
+        });
+
+        it('should call next', function () {            
             var mock = {
                 next: function () { }
             };
 
+            var func = sveMock().execute();
             var nextSpy = chai.spy.on(mock, 'next');
-            l.validate({}, {}, mock.next);
+            func({}, {}, mock.next);
             expect(nextSpy).to.have.been.called.once;
-            return done();
         });
-
     });
 });
