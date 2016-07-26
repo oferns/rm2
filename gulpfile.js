@@ -27,7 +27,7 @@ var
     exorcist = require('exorcist'),
     // test related
     istanbul = require('gulp-istanbul'),
-    mocha = require('gulp-spawn-mocha');
+    mocha = require('gulp-mocha');
 
 // Error logging utility
 var error = function (err) {
@@ -131,7 +131,9 @@ gulp.task('pre-test', function () {
 
 gulp.task('test', ['pre-test'], function () {
     return gulp.src(['routes/**/*-tests.js', 'app/**/*-tests.js'])
-        .pipe(mocha())
+        .pipe(mocha({
+            bin : 'node_modules/mocha/bin/_mocha'
+        }))
         .pipe(istanbul.writeReports({
             dir: './public/coverage'
         }))
