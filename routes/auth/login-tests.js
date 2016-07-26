@@ -45,7 +45,7 @@ describe('/login', function () {
     });
 
     it('should return 422 when POSTING empty values', function (done) {
-        var mock = sveMock(422, { 'login': {}, 'errors': {} });
+        var mock = sveMock(422);
         var router = reload('../../routes/auth/login')(mock);
 
         app.use(router);
@@ -58,7 +58,7 @@ describe('/login', function () {
     });
 
     it('should call next if the status code is not 200 or 422', function (done) {
-        var mock = sveMock(404, {});
+        var mock = sveMock(404);
         var router = reload('../../routes/auth/login')(mock);
 
         app.use(router);

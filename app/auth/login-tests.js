@@ -40,6 +40,11 @@ describe('login', function () {
     describe('sanitize', function () {
         var func = login({}).sanitize();
 
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        });
+
         it('should call normalizeEmail the login[email] field', function () {
             var result = func(req, {}, function () {
                 expect(req.sanitizeBodySpy).to.have.been.called.once;
@@ -50,6 +55,12 @@ describe('login', function () {
 
     describe('validate', function () {
         var func = login({}).validate();
+
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        });
 
         it('should validate the email address', function () {
             func(req, res, function () {
@@ -68,16 +79,25 @@ describe('login', function () {
             });
         });
 
-        it('should set the res.locals.errors property', function(){
+        it('should set the res.locals.errors property', function () {
             func(req, res, function () {
-                 expect(res.locals.errors).to.not.be.an('undefined');
+                expect(res.locals.errors).to.not.be.an('undefined');
             });
         });
 
-        it('should set the res.statusCode property to a number', function(){
+        it('should not set the res.statusCode property when validation passes', function () {
             func(req, res, function () {
-                 expect(res.statusCode).to.be.an('Number');
-            });            
+                expect(res.statusCode ==200, 'Incorrect statusCode, should be 200');
+            });
+        });
+
+        it('should set the res.statusCode property to a 422 when validation fails', function () {
+            var errors = { mockError: 'This is an error' };
+            req['validationErrors'] = sinon.stub().returns(errors);
+            func(req, res, function () {
+                expect(res.statusCode == 422, 'Incorrect statusCode, should be 422');
+                expect(res.locals.errors == errors, 'Should return ');
+            });
         })
-    });    
+    });
 })

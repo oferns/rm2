@@ -1,11 +1,10 @@
 'use strict';
 
-function sveMock(statusCode, locals) {
+function sveMock(statusCode) {
     if (!(this instanceof sveMock)) {
-        return new sveMock(statusCode, locals);
+        return new sveMock(statusCode);
     }
     this.statusCode = statusCode || 200;
-    this.locals = locals || {};
 }
 
 sveMock.prototype.sanitize = function () {
@@ -17,13 +16,10 @@ sveMock.prototype.validate = function () {
 
 sveMock.prototype.execute = function () {
     var sc = this.statusCode;
-    var l = this.locals;
     return function (req, res, next) {
         res.statusCode = sc;
-        res.locals = l;
         return next();
     };
 }
-
 
 module.exports = sveMock;

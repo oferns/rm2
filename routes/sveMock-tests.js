@@ -49,7 +49,6 @@ describe('sveMock', function () {
                 next: function () { }
             };
 
-
             var nextSpy = chai.spy.on(mock, 'next');
 
             func({}, {}, mock.next);
@@ -94,14 +93,6 @@ describe('sveMock', function () {
             func({}, res, function () { });
             assert(res.statusCode === code);
             return done();
-        });
-
-        it('should set the locals on the response object (res)', function () {
-            var locals = { 'entity': {}, 'errors': {} };
-            var func = sveMock(0, locals).execute();
-            var res = {};
-            func({}, res, function () { });
-            assert(res.locals == locals, 'Locals objects do not match');
         });
 
         it('should call next', function () {            

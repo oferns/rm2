@@ -17,7 +17,10 @@ module.exports = function () {
     req['isEmail'] = sinon.stub().returns(req);
     req['withMessage'] = sinon.stub().returns(req);
     req['isLength'] = sinon.stub().returns(req);
-    req['validationErrors'] = sinon.stub().returns(req).returns(false);
+    req['stripLow'] = sinon.stub().returns(req);
+    req['equals'] = sinon.stub().returns(req);
+
+    req['validationErrors'] = sinon.stub().returns(false);
 
     req['sanitizeBodySpy'] = chai.spy.on(req, 'sanitizeBody');
     req['normalizeEmailSpy'] = chai.spy.on(req, 'normalizeEmail');
@@ -26,11 +29,14 @@ module.exports = function () {
     req['isEmailSpy'] = chai.spy.on(req, 'isEmail');
     req['withMessageSpy'] = chai.spy.on(req, 'withMessage');
     req['isLengthSpy'] = chai.spy.on(req, 'isLength');
+    req['stripLowSpy'] = chai.spy.on(req, 'stripLow');
+    req['equalsSpy'] = chai.spy.on(req, 'equals');    
     req['validationErrorsSpy'] = chai.spy.on(req, 'validationErrors');
 
     req.body = {};
     req.query = {};
     req.params = {};
+
     return req;
 
 }

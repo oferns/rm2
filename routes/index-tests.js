@@ -6,11 +6,11 @@ var appMock = require('../appMock');
 var indexRoute = require('./index');
 
 describe('index', function () {
+    var app = appMock();
+    var router = indexRoute({});
 
     describe('/', function () {
         it('should return 200 on the homepage for anonymous user', function (done) {
-            var app = appMock();
-            var router = indexRoute({});
 
             app.use(router);
             request(app)
@@ -23,8 +23,6 @@ describe('index', function () {
 
     describe('/style', function () {
         it('should return 200 on the stylepage for anonymous user', function (done) {
-            var app = appMock();
-            var router = indexRoute({});
 
             app.use(router);
             request(app)
@@ -37,8 +35,6 @@ describe('index', function () {
 
     describe('/error', function () {
         it('should throw a Custom Error to test the 500 route', function (done) {
-            var app = appMock();
-            var router = indexRoute({});
 
             app.use(router);
             request(app)
