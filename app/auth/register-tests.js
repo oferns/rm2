@@ -42,7 +42,7 @@ describe('register', function () {
         var func = register({}).sanitize();
 
         it('should return a middleware function', function () {
-            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert((typeof (func) == 'function'), "Does not return a function");
             assert(func.length == 3, "Wrong number of argumnents, there should be 3");
         });
 
@@ -94,7 +94,7 @@ describe('register', function () {
         var func = register({}).validate();
 
         it('should return a middleware function', function () {
-            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert((typeof (func) == 'function'), "Does not return a function");
             assert(func.length == 3, "Wrong number of argumnents, there should be 3");
         });
 

@@ -39,7 +39,7 @@ describe('sveMock', function () {
         var func = sveMock().sanitize();
 
         it('should return a middleware function', function () {
-            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert((typeof (func) == 'function'), "Does not return a function");
             assert(func.length == 3, "Wrong number of argumnents, there should be 3");
         })
 
@@ -61,7 +61,7 @@ describe('sveMock', function () {
         var func = sveMock().validate();
 
         it('should return a middleware function', function () {
-            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert((typeof (func) == 'function'), "Does not return a function");
             assert(func.length == 3, "Wrong number of argumnents, there should be 3");
         })
 
@@ -82,7 +82,7 @@ describe('sveMock', function () {
 
         it('should return a middleware function', function () {
             var func = sveMock().execute();
-            assert((typeof (func) == 'function'), "Does not retunr a function");
+            assert((typeof (func) == 'function'), "Does not return a function");
             assert(func.length == 3, "Wrong number of argumnents, there should be 3");
         })
 
