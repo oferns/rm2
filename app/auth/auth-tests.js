@@ -68,7 +68,7 @@ describe('auth', function () {
             obj.decryptObject('nonsense', usercrypted, function(err, result){
                 expect(result).to.be.undefined;
                 expect(err).not.to.be.null;            
-                expect(err.message).to.equal('Invalid IV length');
+                expect(err.message).to.match(/:bad decrypt/);
                 done();
             });
         });
