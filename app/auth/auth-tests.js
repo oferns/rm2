@@ -1,5 +1,7 @@
 'use strict';
 
+var crypto = require('crypto');
+
 var chai = require('chai');
 var spies = require('chai-spies');
 var sinon = require('sinon');
@@ -43,7 +45,7 @@ describe('auth', function () {
             });
         });
 
-        it('should return an error when passed an undefined value', function(done){
+        it('should return an error when passed an undefined value', function (done) {
             var obj = auth(authKey);
             obj.encryptObject(undefined, function (err, result) {
                 expect(err).not.to.be.null;
@@ -53,36 +55,110 @@ describe('auth', function () {
         });
     });
 
-    describe('decryptObject', function(){
-        it('should decrypt an object', function(done){
+    describe('decryptObject', function () {
+        it('should decrypt an object', function (done) {
             var obj = auth(authKey);
-            obj.decryptObject(useriv, usercrypted, function(err, result){
+            obj.decryptObject(useriv, usercrypted, function (err, result) {
                 expect(err).to.be.null;
                 expect(result).to.eql(user);
                 done();
             });
         });
 
-        it('should return an error when IV is incorrect', function(done){
+        it('should return an error when IV is incorrect', function (done) {
             var obj = auth(authKey);
-            obj.decryptObject('nonsense', usercrypted, function(err, result){
+            obj.decryptObject('nonsense', usercrypted, function (err, result) {
                 expect(result).to.be.undefined;
-                expect(err).not.to.be.null;            
+                expect(err).not.to.be.null;
                 expect(err.message).to.match(/:bad decrypt/);
                 done();
             });
         });
 
-        it('should return an error when encrypted object is incorrect', function(done){
+        it('should return an error when encrypted object is incorrect', function (done) {
             var obj = auth(authKey);
-            obj.decryptObject(useriv, 'a1b2c3d4e5', function(err, result){
+            obj.decryptObject(useriv, 'a1b2c3d4e5', function (err, result) {
                 expect(result).to.be.undefined;
-                expect(err).not.to.be.null;            
+                expect(err).not.to.be.null;
                 expect(err.message).to.match(/:wrong final block length/);
                 done();
             });
-        });        
-    })
-})
+        });
+    });
 
+    describe('encryptPassword', function () {
+        it('should return an error if the password is not a string', function (done) {
+            var obj = auth(authKey);
+            obj.encryptPassword({}, function (err, result) {
+                expect(result).to.be.undefined;
+                expect(err).not.to.be.null;
+                expect(err.message).to.equal('password must be a string');
+                done();
+            })
+        });
 
+        it('should return an error if the password is a string of 0 length', function (done) {
+            var obj = auth(authKey);
+            obj.encryptPassword('', function (err, result) {
+                expect(result).to.be.undefined;
+                expect(err).not.to.be.null;
+                expect(err.message).to.equal('password must be a string');
+                done();
+            })
+        });
+
+        it('should return an string if the password is a string', function (done) {
+            var obj = auth(authKey);
+            obj.encryptPassword('p', function (err, result) {
+                expect(err).to.be.null;
+                expect(result).to.be.an('string');
+                done();
+            })
+        });
+    });
+
+    describe('verifyPassword', function () {
+
+        it('should return true if the correct password is given', function (done) {
+            var obj = auth(authKey);
+            // This generates a random password each time the test is run
+            var password = crypto.randomBytes(Math.floor(Math.random() * (20 - 15 + 1) + 15)).toString('hex');
+
+            obj.encryptPassword(password, function (err, result) {
+                expect(err).to.be.null;
+                obj.verifyPassword(password, result, function (err, result) {
+                    expect(err).to.be.null;
+                    expect(result).to.be.true;
+                    done();
+                });
+            });
+        });
+
+        it('should return false if the wrong password is given', function (done) {
+            var obj = auth(authKey);
+            var password = 'password';
+            obj.encryptPassword('notpassword', function (err, result) {
+                expect(err).to.be.null;
+                obj.verifyPassword(password, result, function (err, result) {
+                    expect(err).to.be.null;
+                    expect(result).to.be.false;
+                    done();
+                });
+            });
+        });
+
+        it('should return false if the wrong password is given', function (done) {
+            var obj = auth(authKey);
+            var password = 'password';
+            obj.encryptPassword('notpassword', function (err, result) {
+                expect(err).to.be.null;
+                obj.verifyPassword(password, result, function (err, result) {
+                    expect(err).to.be.null;
+                    expect(result).to.be.false;
+                    done();
+                });
+            });
+        });
+
+    });
+});
