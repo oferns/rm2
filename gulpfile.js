@@ -124,15 +124,32 @@ gulp.task('watch', ['clean'], function (cb) {
 });
 
 gulp.task('pre-test', function () {
-    return gulp.src(['routes/**/*.js', '!routes/**/*-tests.js', 'app/**/*.js', '!app/**/*-tests.js'])
+    return gulp.src([
+        '!node_modules/**/*.*',
+        '!*/**/*-tests.js',
+        '!*-tests.js',
+        '!gulpfile.js',
+        '!public/**/*.*',
+        '!.*/**/*.*',
+        '!server.js',
+        '!app.js',
+        '!wallaby.js',
+        '**/*.js',
+    ])
         .pipe(istanbul({ includeUntested: true }))
         .pipe(istanbul.hookRequire({ verbose: true }));
 });
 
 gulp.task('test', ['pre-test'], function () {
-    return gulp.src(['routes/**/*-tests.js', 'app/**/*-tests.js'])
+    return gulp.src([
+        '!node_modules/**/*.*',
+        '!public/**/*.*',
+        '!.*/**/*.*',        
+        '*/**/*-tests.js',
+        '*-tests.js'
+    ])
         .pipe(mocha({
-            bin : 'node_modules/mocha/bin/_mocha'
+            bin: 'node_modules/mocha/bin/_mocha'
         }))
         .pipe(istanbul.writeReports({
             dir: './public/coverage'

@@ -76,7 +76,7 @@ describe('auth', function () {
             obj.decryptObject('nonsense', usercrypted, function (err, result) {
                 expect(result).to.be.undefined;
                 expect(err).not.to.be.null;
-                expect(err.message).to.match(/:bad decrypt/);
+                expect(err.message).to.equal('Invalid IV length');
                 done();
             });
         });
@@ -115,7 +115,7 @@ describe('auth', function () {
 
         it('should return an string if the password is a string', function (done) {
             var obj = auth(options);
-            obj.encryptPassword('p', function (err, result) {
+            obj.encryptPassword('password', function (err, result) {
                 expect(err).to.be.null;
                 expect(result).to.be.an('string');
                 done();
@@ -127,7 +127,7 @@ describe('auth', function () {
 
         it('should return true if the correct password is given', function (done) {
             var obj = auth(options);
-            // This generates a random password each time the test is run
+            // This generates a random hex string each time the test is run
             var password = crypto.randomBytes(Math.floor(Math.random() * (20 - 15 + 1) + 15)).toString('hex');
 
             obj.encryptPassword(password, function (err, result) {

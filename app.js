@@ -21,5 +21,6 @@ app.locals.errors = {};
 app.use('/', express.static(path.join(__dirname, 'public')));
 
 app.use(require('./routes/index')(cp));
-app.use(error.)
+app.use(error.notFound, error.serverError);
+
 module.exports = app;
