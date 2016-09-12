@@ -6,12 +6,17 @@ var crypto = require('crypto');
 const alg = 'aes-256-cbc';
 
 
-var Auth = function (authKey) {
+var Auth = function (options) {
     if (!(this instanceof Auth)) {
-        return new Auth(authKey);
+        return new Auth(options);
     }
 
-    this.authKey = authKey;
+    this.authKey = options.authKey;
+    this.maxsaltLength = Math.min(options.maxsaltLength, 30);
+    this.minsaltLength = Math.max(options.minsaltLength, 5);
+    this.maxiterations = Math.min(options.maxiterations, 15000);
+    this.miniterations = Math.max(options.miniterations, 10);
+    this.hashBytes = Math.min(options.hashBytes, 1280);
 };
 
 
@@ -58,16 +63,16 @@ Auth.prototype.encryptPassword = function (password, callback) {
     }
 
     // TODO: Move saltlength and iter range to options
-    var saltLength = Math.floor(Math.random() * (20 - 15 + 1) + 15); // Between 15 & 20       
-    var iter = Math.floor(Math.random() * (15000 - 5000 + 1) + 5000);
-    var hashBytes = 64;
-
+    var saltLength = Math.floor(Math.random() * (this.maxsaltLength - this.minsaltLength + 1) + this.minsaltLength);
+    var iterations = Math.floor(Math.random() * (this.maxiterations - this.miniterations + 1) + this.miniterationsthis);
+    var bytes = this.hashBytes;
+    
     crypto.randomBytes(saltLength, function (err, salt) {
         if (err) {
             return callback(err);
         }
 
-        crypto.pbkdf2(password, salt, iter, hashBytes, function (err, hash) {
+        crypto.pbkdf2(password, salt, iterations, bytes, function (err, hash) {
             if (err) {
                 return callback(err);
             }
@@ -78,7 +83,7 @@ Auth.prototype.encryptPassword = function (password, callback) {
             // figure out how much of the hash is salt
             passwordhash.writeUInt32BE(salt.length, 0, true);
             // similarly, include the iteration count
-            passwordhash.writeUInt32BE(iter, 4, true);
+            passwordhash.writeUInt32BE(iterations, 4, true);
 
             salt.copy(passwordhash, 8);
             hash.copy(passwordhash, salt.length + 8);
@@ -88,7 +93,7 @@ Auth.prototype.encryptPassword = function (password, callback) {
 };
 
 Auth.prototype.verifyPassword = function (password, hash, callback) {
-    var passwordhash = new Buffer(hash,'binary')
+    var passwordhash = new Buffer(hash, 'binary')
     var saltBytes = passwordhash.readUInt32BE(0);
     var hashBytes = passwordhash.length - saltBytes - 8;
     var iterations = passwordhash.readUInt32BE(4);

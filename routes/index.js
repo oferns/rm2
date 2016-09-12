@@ -2,11 +2,10 @@
 
 var router = require('express').Router({ 'mergeParams': true, 'strict': true });
 
-var errorHandlers = require('../app/error');
-
 module.exports = function(cp) {
      
     var authRoutes = require('./auth/index')(cp); 
+    
     router.route('/')
         .get(function(req, res, next) {
             return res.render('home');
@@ -23,8 +22,6 @@ module.exports = function(cp) {
         });
                 
     router.use('/', authRoutes);
-
-    router.use(errorHandlers.notFound, errorHandlers.serverError);
 
     return router;
 }
