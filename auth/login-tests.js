@@ -80,13 +80,13 @@ describe('login', function () {
 
         it('should set the res.locals.errors property', function () {
             func(req, res, function () {
-                expect(res.locals.errors).to.not.be.an('undefined');
+                assert(res.locals.errors != undefined, 'Errors is undefined');
             });
         });
 
         it('should not set the res.statusCode property when validation passes', function () {
             func(req, res, function () {
-                expect(res.statusCode ==200, 'Incorrect statusCode, should be 200');
+                assert(res.statusCode == 200, 'Incorrect statusCode, should be 200');
             });
         });
 
@@ -94,9 +94,25 @@ describe('login', function () {
             var errors = { mockError: 'This is an error' };
             req['validationErrors'] = sinon.stub().returns(errors);
             func(req, res, function () {
-                expect(res.statusCode == 422, 'Incorrect statusCode, should be 422');
-                expect(res.locals.errors == errors, 'Should return ');
+                assert(res.statusCode == 422, 'Incorrect statusCode, should be 422');
+                assert(res.locals.errors == errors, 'Should return ');
             });
+        })
+    });
+
+    describe('execute', function () {
+        var func = login({}).execute();
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not return a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        });
+
+        it('should call next when the statusCode is not 200', function () {
+            var res = { 'statusCode': 400};
+            func(req, res, function(){
+                assert(res.statusCode == 400, 'Incorrect statusCode, should be 400');
+            })
         })
     });
 })

@@ -66,7 +66,7 @@ Auth.prototype.encryptPassword = function (password, callback) {
     var saltLength = Math.floor(Math.random() * (this.maxsaltLength - this.minsaltLength + 1) + this.minsaltLength);
     var iterations = Math.floor(Math.random() * (this.maxiterations - this.miniterations + 1) + this.miniterationsthis);
     var bytes = this.hashBytes;
-    
+
     crypto.randomBytes(saltLength, function (err, salt) {
         if (err) {
             return callback(err);
@@ -93,21 +93,25 @@ Auth.prototype.encryptPassword = function (password, callback) {
 };
 
 Auth.prototype.verifyPassword = function (password, hash, callback) {
-    var passwordhash = new Buffer(hash, 'binary')
-    var saltBytes = passwordhash.readUInt32BE(0);
-    var hashBytes = passwordhash.length - saltBytes - 8;
-    var iterations = passwordhash.readUInt32BE(4);
-    var salt = passwordhash.slice(8, saltBytes + 8);
-    var hash = passwordhash.toString('binary', saltBytes + 8);
+    try {
+        var passwordhash = new Buffer(hash, 'binary')
+        var saltBytes = passwordhash.readUInt32BE(0);
+        var hashBytes = passwordhash.length - saltBytes - 8;
+        var iterations = passwordhash.readUInt32BE(4);
+        var salt = passwordhash.slice(8, saltBytes + 8);
+        var hash = passwordhash.toString('binary', saltBytes + 8);
 
-    // verify the salt and hash against the password
-    crypto.pbkdf2(password, salt, iterations, hashBytes, function (err, verify) {
-        if (err) {
-            return callback(err, false);
-        }
+        // verify the salt and hash against the password
+        crypto.pbkdf2(password, salt, iterations, hashBytes, function (err, verify) {
+            if (err) {
+                return callback(err, false);
+            }
 
-        return callback(null, verify.toString('binary') === hash);
-    });
+            return callback(null, verify.toString('binary') === hash);
+        });
+    } catch (ex) {
+        return callback(ex, false);
+    }
 };
 
 module.exports = Auth;

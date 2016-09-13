@@ -1,6 +1,7 @@
 'use strict';
 
 var crypto = require('crypto');
+var proxyquire = require('proxyquire');
 
 var chai = require('chai');
 var spies = require('chai-spies');
@@ -27,6 +28,15 @@ const user = { 'name': 'test' };
 
 describe('auth', function () {
     var auth = require('./auth');
+    // Used to fake errors from the crypto library
+    var proxyauth = proxyquire('./auth', {
+        'crypto': {
+            'pbkdf2': function (password, salt, iterations, hashBytes, callback) {
+                return callback(new Error('pbkdf2 error'));
+            },
+        }
+    });
+
 
     describe('CTor', function () {
 
@@ -76,8 +86,8 @@ describe('auth', function () {
             obj.decryptObject('nonsense', usercrypted, function (err, result) {
                 expect(result).to.be.undefined;
                 expect(err).not.to.be.null;
-            // The error is inconsistent across machines
-            //    expect(err.message).to.equal('Invalid IV length');
+                // The error is inconsistent across machines
+                //    expect(err.message).to.equal('Invalid IV length');
                 done();
             });
         });
@@ -122,6 +132,52 @@ describe('auth', function () {
                 done();
             })
         });
+
+        it('should return an error AND false if crypto.pbkdf2 returns an error', function (done) {
+            var obj = proxyauth(options);
+            var regauth = auth(options);
+            var password = 'password';
+
+            regauth.encryptPassword('notpassword', function (err, result) {
+                expect(err).to.be.null;
+                obj.verifyPassword(password, result, function (err, result) {
+                    expect(result).to.be.false;
+                    expect(err).not.to.be.null;
+                    expect(err.message).to.equal('pbkdf2 error');
+                    done();
+                });
+            });
+        });
+
+        it('should return an error if crypto.randomBytes returns an error', function (done) {
+            var proxyauth = proxyquire('./auth', {
+                'crypto': {
+                    'randomBytes': function (length, callback) {
+                        return callback(new Error('randomBytes error'));
+                    },
+                }
+            });
+
+            var obj = proxyauth(options);
+            obj.encryptPassword('notpassword', function (err, result) {
+
+                expect(err).not.to.be.null;
+                expect(err.message).to.equal('randomBytes error');
+                done();
+            });
+
+        });
+
+        it('should return an error if crypto.pbkdf2 returns an error', function (done) {
+            var obj = proxyauth(options);
+            var password = 'password';
+
+            obj.encryptPassword('notpassword', function (err, result) {
+                expect(err).not.to.be.null;
+                expect(err.message).to.equal('pbkdf2 error');
+                done();
+            });
+        });
     });
 
     describe('verifyPassword', function () {
@@ -154,17 +210,31 @@ describe('auth', function () {
             });
         });
 
-        it('should return false if the wrong password is given', function (done) {
-            var obj = auth(options);
+        it('should return an error AND false if crypto.pbkdf2 returns an error', function (done) {
+            var obj = proxyauth(options);
+            var regauth = auth(options);
             var password = 'password';
-            obj.encryptPassword('notpassword', function (err, result) {
+
+            regauth.encryptPassword('notpassword', function (err, result) {
                 expect(err).to.be.null;
                 obj.verifyPassword(password, result, function (err, result) {
-                    expect(err).to.be.null;
                     expect(result).to.be.false;
+                    expect(err).not.to.be.null;
+                    expect(err.message).to.equal('pbkdf2 error');
                     done();
                 });
             });
         });
+
+        it('should return an error AND false with nonsense input', function (done) {
+            var obj = auth(options);
+
+            obj.verifyPassword('', '', function (err, result) {
+                expect(result).to.be.false;
+                expect(err).not.to.be.null;
+                expect(err.message).to.equal('index out of range');
+                done();
+            });
+        })
     });
 });

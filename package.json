@@ -67,6 +67,7 @@
     "jeet": "6.1.2",
     "mocha": "^3.0.2",
     "nib": "^1.1.0",
+    "proxyquire": "^1.7.10",
     "require-reload": "^0.2.2",
     "rimraf": "^2.5.3",
     "rupture": "^0.6.1",

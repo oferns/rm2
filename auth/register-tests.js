@@ -151,4 +151,20 @@ describe('register', function () {
             });
         });
     });
+
+     describe('execute', function () {
+        var func = register({}).execute();
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not return a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        });
+
+        it('should call next when the statusCode is not 200', function () {
+            var res = { 'statusCode': 400};
+            func(req, res, function(){
+                assert(res.statusCode == 400, 'Incorrect statusCode, should be 400');
+            })
+        })
+    });
 });
