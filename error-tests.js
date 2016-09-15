@@ -55,7 +55,7 @@ describe('errors', function () {
         it('should call res.render on the 500 page with the err object ', function () {
             var renderSpy = chai.spy.on(res.render);
             var err = {};
-            errorHandlers.serverError(err, {}, res);            
+            errorHandlers.serverError(err, {}, res);
             expect(renderSpy).to.have.been.called.exactly.once;
         });
     });
