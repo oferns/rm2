@@ -7,7 +7,7 @@ var bodyParser = require('body-parser'); // Parsing the body into javascript obj
 var validator = require('express-validator'); // Used for validation and Sanitization of ALL input parameters and form values
 var cp = {}; // TODO: Conneciton pool here
 var app = express();
-var error = require('error');
+var error = require('./error');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

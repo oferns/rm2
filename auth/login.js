@@ -44,8 +44,6 @@ Login.prototype.execute = function () {
             return next();
         }
 
-        
-
         return next();
     };
 };
