@@ -111,7 +111,7 @@ gulp.task('clean', function (cb) {
     rimraf('public/**/*', cb);
 });
 
-gulp.task('default', ['clean', 'watch'], function (cb) {
+gulp.task('default', ['clean', 'test', 'watch'], function (cb) {
     process({ cb: cb });
 });
 
