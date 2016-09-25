@@ -23,6 +23,9 @@ html
     block styles
         link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
         link(rel='stylesheet' href='/css/rm.css')
+    block scripts
+        script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.js' data-main='js/rm.js' async)
+
     body
         
         nav
@@ -32,11 +35,9 @@ html
             ul
                 block menu
                 li
-                    a(href='#') About
+                    a(href='/about') About
                 li
-                    a(href='#') Contact
-                li
-                    a(href='#') FAQs
+                    a(href='/contact') Contact
                 if !user
                     li
                         a(href='#') Login
@@ -45,13 +46,12 @@ html
                     
         #header
             a(href='/') 
-                img(src='https://redmouse.blob.core.windows.net/img/logo.gif' alt='Red Mouse')
+                img(src='//redmouse.blob.core.windows.net/img/logo.gif' alt='Red Mouse')
                 | Red Mouse
             
         #body
             block body
-            
+                .row
 
 
-    block scripts
         

@@ -10,6 +10,16 @@ module.exports = function(cp) {
         .get(function(req, res, next) {
             return res.render('home');
         });
+
+    router.route('/contact')
+        .get(function(req, res, next) {
+            return res.render('contact');
+        });
+
+    router.route('/about')
+        .get(function(req, res, next) {
+            return res.render('about');
+        });
         
     router.route('/error')
         .get(function(req, res, next) {                        
@@ -18,7 +28,7 @@ module.exports = function(cp) {
         
     router.route('/style')
         .get(function(req, res, next) {
-            return res.render('style/style');
+            return res.render('style/index');
         });
                 
     router.use('/', authRoutes);

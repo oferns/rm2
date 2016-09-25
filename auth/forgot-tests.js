@@ -22,4 +22,13 @@ describe('forgot', function () {
         res = { 'locals': {}, 'statusCode': 200 };
     });
 
+
+    describe('sanitize', function () {
+        var func = forgot({}).sanitize();
+
+        it('should return a middleware function', function () {
+            assert((typeof (func) == 'function'), "Does not return a function");
+            assert(func.length == 3, "Wrong number of argumnents, there should be 3");
+        });
+    });
 });

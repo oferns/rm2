@@ -59,37 +59,17 @@ var process = function (options) {
     }
     processStyles();
 
-    fs.readdirSync('scripts/')
-        .filter(function (item) { return fs.statSync('scripts/' + item).isFile(); })
-        .forEach(function (item) {
-            var itemInfo = path.parse('scripts/' + item);
+    var processJs = function () {
+        gulp.src('./scripts/**/*.js')
+            .pipe(gulp.dest('./public/js'))
+            .pipe(tap(done));        
+    }
 
-            var bundler = browserify({
-                entries: 'scripts/' + item,
-                plugin: collapse,
-                debug: !options.production,
-                cache: {},
-                packageCache: {}
-            });
-            if (options.watch) {
-                bundler = watchify(bundler);
-            }
+    if (options.watch) {
+        gulp.watch('./scripts/**/*.js', processJs);
+    }
 
-            var processScript = function () {
-                bundler.bundle()
-                    .on('error', gutil.log)
-                    .pipe(source(itemInfo.name + '.js'))
-                    .pipe(when(options.production, streamify(uglify())))
-                    .pipe(when(!options.production, transform(function () { return exorcist('js/maps/' + item + '.map'); })))
-                    .pipe(gulp.dest('public/js'))
-                    .pipe(tap(done));
-            };
-
-            if (options.watch) {
-                bundler.on('update', processScript);
-            }
-            processScript();
-        });
+    processJs();
 
     if (options.watch) {
         gutil.log('Starting livereload server...');
@@ -111,7 +91,7 @@ gulp.task('clean', function (cb) {
     rimraf('public/**/*', cb);
 });
 
-gulp.task('default', ['clean', 'test', 'watch'], function (cb) {
+gulp.task('default', ['clean', 'watch'], function (cb) {
     process({ cb: cb });
 });
 
@@ -144,7 +124,7 @@ gulp.task('test', ['pre-test'], function () {
     return gulp.src([
         '!node_modules/**/*.*',
         '!public/**/*.*',
-        '!.*/**/*.*',        
+        '!.*/**/*.*',
         '*/**/*-tests.js',
         '*-tests.js'
     ])
