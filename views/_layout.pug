@@ -1,57 +1,54 @@
-doctype html
-html
-  head
-    block icons
-        link(rel='apple-touch-icon' sizes='57x57' href='//redmouse.blob.core.windows.net/img/apple-icon-57x57.png')
-        link(rel='apple-touch-icon' sizes='60x60' href='//redmouse.blob.core.windows.net/img/apple-icon-60x60.png')
-        link(rel='apple-touch-icon' sizes='72x72' href='//redmouse.blob.core.windows.net/img/apple-icon-72x72.png')
-        link(rel='apple-touch-icon' sizes='76x76' href='//redmouse.blob.core.windows.net/img/apple-icon-76x76.png')
-        link(rel='apple-touch-icon' sizes='114x114' href='//redmouse.blob.core.windows.net/img/apple-icon-114x114.png')
-        link(rel='apple-touch-icon' sizes='120x120' href='//redmouse.blob.core.windows.net/img/apple-icon-120x120.png')
-        link(rel='apple-touch-icon' sizes='144x144' href='//redmouse.blob.core.windows.net/img/apple-icon-144x144.png')
-        link(rel='apple-touch-icon' sizes='152x152' href='//redmouse.blob.core.windows.net/img/apple-icon-152x152.png')
-        link(rel='apple-touch-icon' sizes='180x180' href='//redmouse.blob.core.windows.net/img/apple-icon-180x180.png')
-        link(rel='icon' type='image/png' sizes='192x192' href='//redmouse.blob.core.windows.net/img/android-icon-192x192.png')
-        link(rel='icon' type='image/png' sizes='32x32' href='//redmouse.blob.core.windows.net/img/favicon-32x32.png')
-        link(rel='icon' type='image/png' sizes='96x96' href='//redmouse.blob.core.windows.net/img/favicon-96x96.png')
-        link(rel='icon' type='image/png' sizes='16x16' href='//redmouse.blob.core.windows.net/img/favicon-16x16.png')
-        link(rel='manifest' href='//redmouse.blob.core.windows.net/img/manifest.json')
-        meta(name='msapplication-TileColor' content='#ffffff')
-        meta(name='msapplication-TileImage' content='//redmouse.blob.core.windows.net/img/ms-icon-144x144.png')
-        meta(name='theme-color' content='#ffffff')
-        meta(name='viewport', content='width=device-width,initial-scale=1')
-    block styles
-        link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
-        link(rel='stylesheet' href='/css/rm.css')
-    block scripts
-        script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.js' data-main='js/rm.js' async)
+if !xhr
+    doctype html
+    html
+    head
+        block icons
+            link(rel='apple-touch-icon' sizes='57x57' href='//redmouse.blob.core.windows.net/img/apple-icon-57x57.png')
+            link(rel='apple-touch-icon' sizes='60x60' href='//redmouse.blob.core.windows.net/img/apple-icon-60x60.png')
+            link(rel='apple-touch-icon' sizes='72x72' href='//redmouse.blob.core.windows.net/img/apple-icon-72x72.png')
+            link(rel='apple-touch-icon' sizes='76x76' href='//redmouse.blob.core.windows.net/img/apple-icon-76x76.png')
+            link(rel='apple-touch-icon' sizes='114x114' href='//redmouse.blob.core.windows.net/img/apple-icon-114x114.png')
+            link(rel='apple-touch-icon' sizes='120x120' href='//redmouse.blob.core.windows.net/img/apple-icon-120x120.png')
+            link(rel='apple-touch-icon' sizes='144x144' href='//redmouse.blob.core.windows.net/img/apple-icon-144x144.png')
+            link(rel='apple-touch-icon' sizes='152x152' href='//redmouse.blob.core.windows.net/img/apple-icon-152x152.png')
+            link(rel='apple-touch-icon' sizes='180x180' href='//redmouse.blob.core.windows.net/img/apple-icon-180x180.png')
+            link(rel='icon' type='image/png' sizes='192x192' href='//redmouse.blob.core.windows.net/img/android-icon-192x192.png')
+            link(rel='icon' type='image/png' sizes='32x32' href='//redmouse.blob.core.windows.net/img/favicon-32x32.png')
+            link(rel='icon' type='image/png' sizes='96x96' href='//redmouse.blob.core.windows.net/img/favicon-96x96.png')
+            link(rel='icon' type='image/png' sizes='16x16' href='//redmouse.blob.core.windows.net/img/favicon-16x16.png')
+            link(rel='manifest' href='//redmouse.blob.core.windows.net/img/manifest.json')
+            meta(name='msapplication-TileColor' content='#ffffff')
+            meta(name='msapplication-TileImage' content='//redmouse.blob.core.windows.net/img/ms-icon-144x144.png')
+            meta(name='theme-color' content='#ffffff')
+            meta(name='viewport', content='width=device-width,initial-scale=1')
+        block styles
+            link(rel='stylesheet' href='//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css')
+            link(rel='stylesheet' href='/css/rm.css')
+        block scripts
+            script(type='text/javascript' src='//cdnjs.cloudflare.com/ajax/libs/require.js/2.3.2/require.js' data-main='js/rm.js' async)
 
-    body
-        
-        nav
-            input#menu(type='checkbox')
-            label(for='menu' onclick='') Menu
-                
-            ul
-                block menu
-                li
-                    a(href='/about') About
-                li
-                    a(href='/contact') Contact
-                if !user
-                    li
-                        a(href='#') Login
-                    li
-                        a(href='#') Sign Up
-                    
-        #header
-            a(href='/') 
-                img(src='//redmouse.blob.core.windows.net/img/logo.gif' alt='Red Mouse')
-                | Red Mouse
+        body
             
-        #body
-            block body
-                .row
-
-
-        
+            nav
+                input#menu(type='checkbox')
+                label(for='menu' onclick='') Menu
+                    
+                ul
+                    block menu
+                    li
+                        a(href='/about') About
+                    li
+                        a(href='/contact') Contact
+                    if !user
+                        li
+                            a(href='/login') Login
+                        li
+                            a(href='/register') Sign Up
+                        
+            #header
+                a(href='/') 
+                    img(src='//redmouse.blob.core.windows.net/img/logo.gif' alt='Red Mouse')
+                    | Red Mouse                            
+            #body
+block body
+            

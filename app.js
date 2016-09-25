@@ -23,7 +23,7 @@ app.use('/', express.static(path.join(__dirname, 'public')));
 
 
 // Patching our app's render method'
-app.render = patch.render(app);
+// app.render = patch.render(app);
 app.use(patch.setXhr);
 
 

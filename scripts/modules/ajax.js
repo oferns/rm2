@@ -4,19 +4,63 @@
 
 define(function () {
 
+    var init = function(){
+        var row = document.getElementsByClassName('row')[0];               
+        history.replaceState(row.outerHTML,'',document.location.href);
+    }
+    window.onpopstate = function(event){
+        var row = document.getElementsByClassName('row')[0];       
+        var oldrow = document.createRange().createContextualFragment(event.state);
+        var parent = row.parentNode;
+        parent.replaceChild(oldrow, row);
+    };
+
+    var findParentRow = function(element){
+        var parent = element.parentNode;
+        while(parent){
+            if(parent.classList && parent.classList.contains('row')){
+                return parent;
+            };
+            parent = parent.parentNode;
+        }
+
+        var parents = element.ownerDocument.getElementsByClassName('row');
+        
+        if(parents.length){
+            return parents[0];
+        }
+
+        parent = element.ownerDocument.createElement('DIV');
+        parent.classList.add('row');
+        var body = element.ownerDocument.getElementById('body');
+        body = body || element.ownerDocument.body;
+
+        while (body.firstChild) {
+            body.removeChild(body.firstChild);
+        };
+
+        body.appendChild(parent);
+        return parent;
+    }
+
     var ajaxPage = function (anchor) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', anchor.href);
         xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.onload = function () {
             if(xhr.status >= 200 && xhr.status < 400){
-                alert('success');
+                var row  = findParentRow(anchor);
+                var parent = row.parentNode;
+                var newrow = document.createRange().createContextualFragment(xhr.responseText);
+                parent.replaceChild(newrow, row);
+                history.pushState(xhr.responseText, '', anchor.href);
             } else{
                 alert('failed! ' + xhr.status);
             };
         }
         xhr.send();
     }
+    init();
 
     return function (element) {
         element.addEventListener('click', function (e) {
