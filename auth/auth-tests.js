@@ -26,8 +26,10 @@ const useriv = '8ff8fe8554e5e8499bca885a60e9ca47';
 
 const user = { 'name': 'test' };
 
+var auth = require('./auth');
+
 describe('auth', function () {
-    var auth = require('./auth');
+    
     // Used to fake errors from the crypto library
     var proxyauth = proxyquire('./auth', {
         'crypto': {

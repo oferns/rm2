@@ -8,6 +8,7 @@ var validator = require('express-validator'); // Used for validation and Sanitiz
 var cp = {}; // TODO: Conneciton pool here
 var app = express();
 var error = require('./error');
+var patch = require('./express/patch')();
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -20,7 +21,14 @@ app.locals.errors = {};
 
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+
+// Patching our app's render method'
+app.render = patch.render(app);
+app.use(patch.setXhr);
+
+
 app.use(require('./routes/index')(cp));
 app.use(error.notFound, error.serverError);
+
 
 module.exports = app;

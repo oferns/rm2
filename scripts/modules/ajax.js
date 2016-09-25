@@ -7,13 +7,13 @@ define(function () {
     var ajaxPage = function (anchor) {
         var xhr = new XMLHttpRequest();
         xhr.open('GET', anchor.href);
+        xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
         xhr.onload = function () {
             if(xhr.status >= 200 && xhr.status < 400){
                 alert('success');
             } else{
                 alert('failed! ' + xhr.status);
-
-            }
+            };
         }
         xhr.send();
     }
