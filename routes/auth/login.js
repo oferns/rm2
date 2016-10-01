@@ -8,7 +8,7 @@ module.exports = function (login) {
         .get(function (req, res, next) {
             return res.render('auth/login', { 'errors': req.errors || {}, 'login': {} });
         })
-        .post(login.sanitize(), login.validate(), login.execute(), function (req, res, next) {
+        .post(login.sanitize, login.validate(), login.execute(), function (req, res, next) {
             switch(res.statusCode){
                 case 200: return res.redirect('/home');
                 case 422: return res.render('auth/login',{ 'login':{} });
