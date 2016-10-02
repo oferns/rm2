@@ -140,7 +140,6 @@ gulp.task('test', ['pretest'], function () {
         .pipe(istanbul.enforceThresholds({ thresholds: { global: 50 } }));
 });
 
-
 gulp.task('stylus', ['clean'], function () {
     return gulp.src('styl/**/*.styl')
         .pipe(when(!options.production, maps.init()))
