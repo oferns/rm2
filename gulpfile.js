@@ -73,8 +73,11 @@ gulp.task('package', function () {
         '!**/**/*-tests.js',
         '!*Mock.js',
         '!**/**/*Mock.js',
+        '!**/coverage/**/*',
+        '!**/public/coverage',
         '**/*.js',
-        'public/**/*'
+        '**/public/**/*',
+        'web.config'
     ];
 
     //add exclusion patterns for all dev dependencies
@@ -147,7 +150,7 @@ gulp.task('stylus', ['clean'], function () {
         .pipe(prefix('> 5% in RO')).on('error', error)
         .pipe(when(!options.production, maps.write()))
         .pipe(when(options.production, nano()))
-        .pipe(gulp.dest('public/css'))
+        .pipe(gulp.dest('./public/css'))
         .pipe(tap(done));
 });
 
