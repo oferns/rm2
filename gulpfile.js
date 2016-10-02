@@ -7,7 +7,10 @@ var
     gutil = require('gulp-util'),
     when = require('gulp-if'),
     tap = require('gulp-tap'),
+    zip = require('gulp-zip'),
     livereload = require('gulp-livereload'),
+    minimist = require('minimist'),
+    requirejsOptimize = require('gulp-requirejs-optimize'),
     // CSS-related
     maps = require('gulp-sourcemaps'),
     stylus = require('gulp-stylus'),
@@ -29,6 +32,18 @@ var
     istanbul = require('gulp-istanbul'),
     mocha = require('gulp-mocha');
 
+var knownOptions = {
+    string: ['packageName', 'packagePath', 'env'],
+    default: {
+        packageName: "Package.zip",
+        packagePath: path.join(__dirname, '_package'),
+        env: process.env.NODE_ENV || 'development'
+    }
+}
+
+var options = minimist(process.argv.slice(2), knownOptions);
+
+
 // Error logging utility
 var error = function (err) {
     gutil.log(err.name + ': ' + gutil.colors.red(err.message));
@@ -41,69 +56,56 @@ var done = function (file) {
     }
 };
 
-// Main work is done here
-var process = function (options) {
-
-    var processStyles = function () {
-        gulp.src('styl/rm.styl')
-            .pipe(when(!options.production, maps.init()))
-            .pipe(stylus({ use: [jeet(), rupture(), axis()], errors: true, 'include css:': true, paths: ['node_modules'] })).on('error', error)
-            .pipe(prefix('> 5% in RO')).on('error', error)
-            .pipe(when(!options.production, maps.write()))
-            .pipe(when(options.production, nano()))
-            .pipe(gulp.dest('public/css'))
-            .pipe(tap(done));
-    };
-    if (options.watch) {
-        gulp.watch('styl/**/*', processStyles);
-    }
-    processStyles();
-
-    var processJs = function () {
-        gulp.src('./scripts/**/*.js')
-            .pipe(gulp.dest('./public/js'))
-            .pipe(tap(done));        
-    }
-
-    if (options.watch) {
-        gulp.watch('./scripts/**/*.js', processJs);
-    }
-
-    processJs();
-
-    if (options.watch) {
-        gutil.log('Starting livereload server...');
-        livereload.listen();
-        gulp.watch('styl/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
-        gulp.watch('scripts/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
-        gulp.watch('routes/**/*', function (e) { livereload.changed('/'); });
-        gutil.log(
-            'Watching sources for changes,',
-            gutil.colors.yellow('press Ctrl+C to exit') + '...'
-        );
-    } else {
-        options.cb();
-    }
-};
-
 gulp.task('clean', function (cb) {
     gutil.log('Cleaning scripts, styles and source maps in', gutil.colors.green('public'), 'folder...');
     rimraf('public/**/*', cb);
 });
 
-gulp.task('default', ['clean', 'watch'], function (cb) {
-    process({ cb: cb });
+gulp.task('package', function () {
+
+    var packagePaths = [
+        '!**/_package/**',
+        '!**/styl/**',
+        '!**/scripts/**',
+        '!gulpfile.js',
+        '!wallaby.js',
+        '!*-tests.js',
+        '!**/**/*-tests.js',
+        '!*Mock.js',
+        '!**/**/*Mock.js',
+        '**/*.js',
+        'public/**/*'
+    ];
+
+    //add exclusion patterns for all dev dependencies
+    var packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    var devDeps = packageJSON.devDependencies;
+
+    for (var propName in devDeps) {
+        var excludePattern1 = "!**/node_modules/" + propName + "/**";
+        var excludePattern2 = "!**/node_modules/" + propName;
+        packagePaths.push(excludePattern1);
+        packagePaths.push(excludePattern2);
+    }
+
+    return gulp.src(packagePaths)
+        .pipe(zip(options.packageName))
+        .pipe(gulp.dest(options.packagePath));
 });
 
-gulp.task('production', ['clean'], function (cb) {
-    process({ production: true, cb: cb });
+gulp.task('watch', function () {
+    gutil.log('Starting livereload server...');
+    livereload.listen();
+    gulp.watch('styl/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
+    gulp.watch('scripts/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
+    gulp.watch('routes/**/*', function (e) { livereload.changed('/'); });
+    gutil.log(
+        'Watching sources for changes,',
+        gutil.colors.yellow('press Ctrl+C to exit') + '...'
+    )
 });
 
-gulp.task('watch', ['clean'], function (cb) {
-    process({ watch: true, cb: cb });
-});
-
-gulp.task('pre-test', function () {
+gulp.task('pretest', function () {
     return gulp.src([
         '!node_modules/**/*.*',
         '!*/**/*-tests.js',
@@ -120,7 +122,7 @@ gulp.task('pre-test', function () {
         .pipe(istanbul.hookRequire({ verbose: true }));
 });
 
-gulp.task('test', ['pre-test'], function () {
+gulp.task('test', ['pretest'], function () {
     return gulp.src([
         '!node_modules/**/*.*',
         '!public/**/*.*',
@@ -129,10 +131,31 @@ gulp.task('test', ['pre-test'], function () {
         '*-tests.js'
     ])
         .pipe(mocha({
-            bin: 'node_modules/mocha/bin/_mocha'
+            bin: 'node_modules/mocha/bin/_mocha',
+            timeout: 50000
         }))
         .pipe(istanbul.writeReports({
             dir: './public/coverage'
         }))
-        .pipe(istanbul.enforceThresholds({ thresholds: { global: 95 } }));
+        .pipe(istanbul.enforceThresholds({ thresholds: { global: 50 } }));
 });
+
+
+gulp.task('stylus', ['clean'], function () {
+    return gulp.src('styl/**/*.styl')
+        .pipe(when(!options.production, maps.init()))
+        .pipe(stylus({ use: [jeet(), rupture(), axis()], errors: true, 'include css:': true, paths: ['node_modules'] })).on('error', error)
+        .pipe(prefix('> 5% in RO')).on('error', error)
+        .pipe(when(!options.production, maps.write()))
+        .pipe(when(options.production, nano()))
+        .pipe(gulp.dest('public/css'))
+        .pipe(tap(done));
+});
+
+gulp.task('clientscript', ['clean'], function () {
+    return gulp.src('./scripts/**/*.js')
+        .pipe(gulp.dest('./public/js'));
+});
+
+
+gulp.task('build', ['test', 'stylus', 'clientscript', 'package']);
