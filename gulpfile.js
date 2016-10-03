@@ -81,6 +81,7 @@ gulp.task('package', function () {
     ];
 
     //add exclusion patterns for all dev dependencies
+
     var packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
     var devDeps = packageJSON.devDependencies;
 
