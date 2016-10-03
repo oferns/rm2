@@ -162,4 +162,4 @@ gulp.task('clientscript', ['clean'], function () {
 });
 
 
-gulp.task('build', ['test', 'stylus', 'clientscript', 'package']);
+gulp.task('build', ['test', 'stylus', 'clientscript']);
