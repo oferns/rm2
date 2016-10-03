@@ -77,6 +77,7 @@ gulp.task('package', function () {
         '!**/public/coverage',
         '**/*.js',
         '**/public/**/*',
+        '**/node_modules/**/*',
         'web.config'
     ];
 
