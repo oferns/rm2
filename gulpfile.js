@@ -75,8 +75,9 @@ gulp.task('package', function () {
         '!**/**/*Mock.js',
         '!**/coverage/**/*',
         '!**/public/coverage',
-        '**/*.js',
+        '**/**/*.js',
         '**/public/**/*',
+        '**/views/**/*',        
         '**/node_modules/**/*',
         'web.config'
     ];
