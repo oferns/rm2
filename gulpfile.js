@@ -81,15 +81,15 @@ gulp.task('package', function () {
     ];
 
     //add exclusion patterns for all dev dependencies
-    var packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
-    var devDeps = packageJSON.devDependencies;
+    // var packageJSON = JSON.parse(fs.readFileSync(path.join(__dirname, 'package.json'), 'utf8'));
+    // var devDeps = packageJSON.devDependencies;
 
-    for (var propName in devDeps) {
-        var excludePattern1 = "!**/node_modules/" + propName + "/**";
-        var excludePattern2 = "!**/node_modules/" + propName;
-        packagePaths.push(excludePattern1);
-        packagePaths.push(excludePattern2);
-    }
+    // for (var propName in devDeps) {
+    //     var excludePattern1 = "!**/node_modules/" + propName + "/**";
+    //     var excludePattern2 = "!**/node_modules/" + propName;
+    //     packagePaths.push(excludePattern1);
+    //     packagePaths.push(excludePattern2);
+    // }
 
     return gulp.src(packagePaths)
         .pipe(zip(options.packageName))
@@ -160,4 +160,4 @@ gulp.task('clientscript', ['clean'], function () {
 });
 
 
-gulp.task('build', ['test', 'stylus', 'clientscript', 'package']);
+gulp.task('build', ['test', 'stylus', 'clientscript']);
