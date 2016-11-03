@@ -102,9 +102,8 @@ gulp.task('package', function () {
 gulp.task('watch', function () {
     gutil.log('Starting livereload server...');
     livereload.listen();
-    gulp.watch('styl/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
-    gulp.watch('scripts/**/*', function (e) { livereload.changed(path.relative('static', e.path)); });
-    gulp.watch('routes/**/*', function (e) { livereload.changed('/'); });
+    gulp.watch('styl/**/*', ['stylus']);
+    gulp.watch('scripts/**/*',  ['clientscript']);
     gutil.log(
         'Watching sources for changes,',
         gutil.colors.yellow('press Ctrl+C to exit') + '...'
@@ -138,7 +137,7 @@ gulp.task('test', ['pretest'], function () {
     ])
         .pipe(mocha({
             bin: 'node_modules/mocha/bin/_mocha',
-            timeout: 50000
+        //    timeout: 50000
         }))
         .pipe(istanbul.writeReports({
             dir: './public/coverage'
@@ -147,13 +146,13 @@ gulp.task('test', ['pretest'], function () {
 });
 
 gulp.task('stylus', ['clean'], function () {
-    return gulp.src('styl/**/*.styl')
+    return gulp.src('styl/**/rm.styl')
         .pipe(when(!options.production, maps.init()))
         .pipe(stylus({ use: [jeet(), rupture(), axis()], errors: true, 'include css:': true, paths: ['node_modules'] })).on('error', error)
         .pipe(prefix('> 5% in RO')).on('error', error)
         .pipe(when(!options.production, maps.write()))
         .pipe(when(options.production, nano()))
-        .pipe(gulp.dest('./public/css'))
+        .pipe(gulp.dest('./public/css/'))
         .pipe(tap(done));
 });
 
@@ -163,4 +162,4 @@ gulp.task('clientscript', ['clean'], function () {
 });
 
 
-gulp.task('build', ['test', 'stylus', 'clientscript']);
+gulp.task('build', ['test', 'stylus', 'clientscript', 'watch']);

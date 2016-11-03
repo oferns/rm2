@@ -1,0 +1,22 @@
+extends _layout
+
+
+append nav
+    input#menu(type='checkbox')
+    label(for='menu' onclick='') Menu
+        
+    ul
+        block menu
+        li
+            a(href='/about') About
+        li
+            a(href='/contact') Contact
+        if !user
+            li
+                a(href='/login') Login
+            li
+                a(href='/register') Sign Up
+
+append header
+    a(href='/') 
+        img(src='//hunterfinance.blob.core.windows.net/img/logo.png' alt='Hunter Finance')

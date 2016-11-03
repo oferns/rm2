@@ -31,25 +31,9 @@ if !xhr
         body
             
             nav
-                input#menu(type='checkbox')
-                label(for='menu' onclick='') Menu
-                    
-                ul
-                    block menu
-                    li
-                        a(href='/about') About
-                    li
-                        a(href='/contact') Contact
-                    if !user
-                        li
-                            a(href='/login') Login
-                        li
-                            a(href='/register') Sign Up
-                        
+                block nav                        
             #header
-                a(href='/') 
-                    img(src='//redmouse.blob.core.windows.net/img/logo.gif' alt='Red Mouse')
-                    | Red Mouse                            
+                block header
             #body
 block body
             

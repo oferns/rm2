@@ -2,7 +2,7 @@ form(name="login", action="/login", method="post")
     input(type="hidden" name="_csrf" value=csrfToken)
     fieldset 
         legend 
-            span Log in
+            span Investor Portal
         .field
             label(
                 id="email"
@@ -19,7 +19,7 @@ form(name="login", action="/login", method="post")
                 )
             label(
                 id='login[email]-error'
-                for='login[email]').error= errors['login[email]'] ? errors['login[email]'].msg : 'Email is incorrect'
+                for='login[email]').error= errors['login[email]'] ? errors['login[email]'].msg : ''
         .field
             label(
                 id="password"
