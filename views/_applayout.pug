@@ -2,21 +2,14 @@ extends _layout
 
 
 append nav
-    input#menu(type='checkbox')
-    label(for='menu' onclick='') Menu
-        
     ul
-        block menu
-        li
-            a(href='/about') About
-        li
-            a(href='/contact') Contact
-        if !user
-            li
-                a(href='/login') Login
-            li
-                a(href='/register') Sign Up
+        for item in user.nav
+            li(class=item.current ? 'selected' : undefined)
+                a(href=item.url)=item.title
 
 append header
     a(href='/') 
-        img(src='//hunterfinance.blob.core.windows.net/img/logo.png' alt='Hunter Finance')
+        img(src= abu + 'logo.png' alt='Hunter Finance')
+    | INVESTOR PORTAL
+    span
+        a(href='/account')= user.display_name

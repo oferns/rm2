@@ -19,8 +19,19 @@ app.use(validator());
 
 app.locals.errors = {};
 
+app.locals.abu = "//hunterfinance.blob.core.windows.net/pub/";
+
 app.use('/', express.static(path.join(__dirname, 'public')));
 
+
+app.locals.user = {
+    display_name: 'Joe Bloggs',
+    email: 'devteam@nlsltd.com',
+    nav: [
+        { url: '/', title: 'Dashboard', current: true },
+        { url: '/investments', title: 'Investments' }]
+
+};
 
 // Patching our app's render method'
 // app.render = patch.render(app);

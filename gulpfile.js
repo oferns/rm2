@@ -77,7 +77,7 @@ gulp.task('package', function () {
         '!**/public/coverage',
         '**/**/*.js',
         '**/public/**/*',
-        '**/views/**/*',        
+        '**/views/**/*',
         '**/node_modules/**/*',
         'web.config'
     ];
@@ -103,7 +103,7 @@ gulp.task('watch', function () {
     gutil.log('Starting livereload server...');
     livereload.listen();
     gulp.watch('styl/**/*', ['stylus']);
-    gulp.watch('scripts/**/*',  ['clientscript']);
+    gulp.watch('scripts/**/*', ['clientscript']);
     gutil.log(
         'Watching sources for changes,',
         gutil.colors.yellow('press Ctrl+C to exit') + '...'
@@ -137,7 +137,7 @@ gulp.task('test', ['pretest'], function () {
     ])
         .pipe(mocha({
             bin: 'node_modules/mocha/bin/_mocha',
-        //    timeout: 50000
+            //    timeout: 50000
         }))
         .pipe(istanbul.writeReports({
             dir: './public/coverage'
@@ -162,4 +162,4 @@ gulp.task('clientscript', ['clean'], function () {
 });
 
 
-gulp.task('build', ['test', 'stylus', 'clientscript', 'watch']);
+gulp.task('build', ['stylus', 'clientscript', 'test']);

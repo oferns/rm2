@@ -1,7 +1,6 @@
 extends ../_layout
 
-block append body
-    .center
-        .row
-            img(src='//hunterfinance.blob.core.windows.net/img/logo.png' alt='Hunter Finance')
-            include ./partials/_login
+block append main
+    section
+        img(src= abu + 'logo.png' alt='Hunter Finance')
+        include ./partials/_login

@@ -9,6 +9,10 @@ module.exports = function(cp) {
     router.use('/', loginRoutes);        
 
 
+    var accountRoutes = require('./account')();
+    router.use('/', accountRoutes);        
+
+
     var register = require('../../auth/register')(cp);
     var registerRoutes = require('./register')(register);
     router.use('/', registerRoutes);        

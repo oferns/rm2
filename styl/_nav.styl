@@ -1,100 +1,21 @@
 nav
-    input[type=checkbox]#menu
-        position fixed
-        left -9999px
-        +below(rupture.desktop-cutoff)
-            &~ ul 
-                margin 0
-                padding 0
-                text-align left
-                height auto
-                li
-                    display block
-                    margin 0
-                    a
-                        padding 0em 4em 0 2em
-                        color $red
-                        background-color $black                        
-
-            &:not(checked) ~ ul
-                border none
-                position fixed
-                right 0
-                margin-top 3em
-                visibility hidden
-                transition ease 200ms
-                li a
-                    transition:height 200ms ease-out
-                    height 0
-                    border none
-                    color transparent
-                    
-            &:checked ~ ul
-                border-top 1px solid $red
-                border-left 1px solid $red
-                transition ease 200ms
-                visibility visible
-                li a
-                    transition:height 200ms ease-in
-                    height 3em
-                    opacity 1
-                    border-bottom 1px solid $red
-                    color $white
-                    &:hover
-                        background-color $silver
-                        color $red
-            &:checked ~ label
-                color transparent
-                &:after
-                    position fixed
-                    font-size 2em
-                    right 0.5em
-                    display inline
-                    font-family FontAwesome
-                    content '\f00d'
-                    font-weight normal
-                    color $red
-             &:not(checked) ~ label
-                color transparent
-                &:after
-                    position fixed
-                    font-size 2em
-                    right 0.5em
-                    display inline
-                    font-family FontAwesome
-                    content '\f0c9'
-                    font-weight normal
-                    color $red
-                    
     ul
-        position absolute
-        top 0
-        right 2em
-        height 3em
-        line-height 3em
         list-style none
-        margin-top 0
-        display inline-block
-        z-index 2
-        li
+        padding 0 2em 0 4em
+        margin 0
+        background $lgrey
+        height 4em
+        li 
             display inline-block
-            margin-left 0.75em
-            a 
-                display block
+            height 100%
+            line-height 4em
+            padding 0 2em 0 2em
+            a
                 text-decoration none
-                color $red
+                color $dblue
                 font-weight bold
-                &:hover
-                    color $black
-    &> label
-        visibility hidden
-        display block
-        position fixed
-        line-height 3em
-        top 0
-        right 1em
-        z-index 2
-        +below(rupture.desktop-cutoff)
-            visibility visible
-        +below(rupture.mobile-cutoff)
-            right 0.5em
+                font-size 1.25em
+            &.selected
+                background $blue                
+                a
+                    color $white

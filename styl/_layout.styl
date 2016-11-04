@@ -12,50 +12,55 @@ html
         +below(rupture.mobile-cutoff)
             font-size 0.85em
         cf()
-.row
-    center(95%)
-    +below(rupture.desktop-cutoff)
-        center(98%)
-.span
-    span(1)
-    
-#header
-    span(1)
-    height 3em
-    line-height 3em
-    box-shadow none
-    border-radius 0
+
+header
+    width 100%
+    font-size 1.5em
+    line-height 2em
     z-index 1
+    text-align center
     +below(rupture.desktop-cutoff)
-        background $black
-        border-bottom 1px solid $red
-    > a
-        margin-left 0.75em
-        text-decoration none
-        color $red
-        font-weight bold
-        +below(rupture.desktop-cutoff)
-            margin-left 0.5em
-        +below(rupture.mobile-cutoff)
-            margin-left 0.25em
+        font-size 1.25em
+    a
         img
+            position absolute
+            top 0.25em
+            left 0.25em
             vertical-align middle
-            height 3em
+            height 1.5em
             margin-right 0.75em
             +below(rupture.desktop-cutoff)
                 margin-right 0.5em
             +below(rupture.mobile-cutoff)
                 margin-right 0.25em
+    span
+        a 
+            position absolute
+            top 0
+            right 2em
+            color $white
+            text-decoration none
+            font-size 0.5em
+            font-weight bold
+            &:after
+                content '\f2c0'
+                font-family FontAwesome
+                padding-left 0.5em
+                font-weight normal
+                font-style normal
 
-section
-    margin 1em 0 1em 0
-    background-color $white            
-    > div, p
-        padding  0 1em 0 1em
-#body
-    margin-top 3em
-    center(100%)
-
+main
+    col(1)
+    height 100%
+    &> *
+        align(vertical)
+        width 100%
+    +above(rupture.mobile-cutoff)
+        > *
+            align(both)
+            width auto
+    +below(rupture.desktop-cutoff)
+        center(98%)
 .half
     col(1/2)
     +below(rupture.mobile-cutoff)
@@ -95,13 +100,3 @@ section
         col(1)
 
 
-.center
-    col(1)
-    height 100%
-    &> *
-        align(vertical)
-        width 100%
-    +above(rupture.mobile-cutoff)
-        > *
-            align(both)
-            width auto          

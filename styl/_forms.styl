@@ -1,45 +1,18 @@
 form
     fieldset
-        box-shadow 5px 5px 15px -5px rgba(247,0,0,1)       
-        border-radius 0.8em
         padding 1em 0 1em 0
         border none
-        background-color $white            
         legend
             padding 0
             margin 0
             width 100%
             font-size 1.25em
             line-height 1.25em
-            span
-                display block
-                width 100%
-                position relative
-                background-color $black
-                color $white
-                border-radius 0.8em 0.8em 0 0
-                text-align center
-        .field
-            padding 0.5em
-            margin 0.5em
+            text-align center
+            align center
+        section
             label
-                display inline-block
-                width 35%
-                text-align right
-                margin-right 4%
-                vertical-align middle
-                &.error
-                    position absolute
-                    width auto
-                    left 95%
-                    color $red
-                    white-space no-wrap
-                    margin-top 0.33em
-                    font-size 0.9em
-                    +below(rupture.mobile-cutoff)
-                        left 50%
-                        margin-top 3em
-                    
+                display none                    
         +html5-inputs()
             input($red,50%)
 
